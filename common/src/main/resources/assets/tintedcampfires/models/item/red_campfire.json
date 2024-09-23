@@ -1,0 +1,7 @@
+{
+  "parent": "item/generated",
+  "textures": {
+    "layer0": "tintedcampfires:item/red_campfire",
+    "layer1": "tintedcampfires:item/campfire_item_overlay"
+  }
+}

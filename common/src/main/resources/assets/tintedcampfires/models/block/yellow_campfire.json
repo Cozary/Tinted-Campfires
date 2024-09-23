@@ -1,0 +1,8 @@
+{
+  "parent": "block/template_campfire",
+  "textures": {
+    "fire": "tintedcampfires:block/yellow_campfire",
+    "lit_log": "tintedcampfires:block/yellow_campfire_log_lit"
+  },
+  "render_type": "cutout"
+}
