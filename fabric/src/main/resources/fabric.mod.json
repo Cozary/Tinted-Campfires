@@ -19,9 +19,9 @@
       "com.cozary.tintedcampfires.TintedCampfiresFabric"
     ],
     "client": [
-      "com.cozary.tintedcampfires.init.BlockRenderRegister",
-      "com.cozary.tintedcampfires.init.DispenserRegister",
-      "com.cozary.tintedcampfires.init.ParticleRegister"
+      "com.cozary.tintedcampfires.client.BlockRenderRegister",
+      "com.cozary.tintedcampfires.client.DispenserRegister",
+      "com.cozary.tintedcampfires.client.ParticleRegister"
     ]
   },
   "depends": {
