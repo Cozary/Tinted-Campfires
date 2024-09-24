@@ -31,9 +31,9 @@ public class CampfireDispenseBehavior extends DefaultDispenseItemBehavior {
             level.setBlockAndUpdate(blockpos, blockstate.setValue(BlockStateProperties.LIT, true));
             level.gameEvent(null, GameEvent.BLOCK_CHANGE, blockpos);
 
-            if (itemStack.hurt(1, level.random, null)) {
-                itemStack.setCount(0);
-            }
+            itemStack.hurtAndBreak(1, level.getRandom(), null, () -> itemStack.setCount(0));
+
+
         } else {
             return this.defaultBehavior.dispense(blockSource, itemStack);
         }
