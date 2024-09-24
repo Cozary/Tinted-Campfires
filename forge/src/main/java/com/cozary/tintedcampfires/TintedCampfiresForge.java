@@ -1,5 +1,6 @@
 package com.cozary.tintedcampfires;
 
+import com.cozary.tintedcampfires.campfire.colorsRenderer.*;
 import com.cozary.tintedcampfires.dispenser.CampfireDispenseBehavior;
 import com.cozary.tintedcampfires.dispenser.SetColorDispenseBehavior;
 import com.cozary.tintedcampfires.init.ModBlockEntities;
@@ -33,7 +34,7 @@ public class TintedCampfiresForge {
 
     @SubscribeEvent
     public void registerRenders(EntityRenderersEvent.RegisterRenderers event) {
-        event.registerBlockEntityRenderer(ModBlockEntities.BLACK_CAMPFIRE_TILE.get(), BlackCampfireTileEntityRenderer::new);
+        event.registerBlockEntityRenderer(ModBlockEntities.BLACK_CAMPFIRE_TILE.get(), BlackCampfireBlockEntityRenderer::new);
         event.registerBlockEntityRenderer(ModBlockEntities.BLUE_CAMPFIRE_TILE.get(), BlueCampfireBlockEntityRenderer::new);
         event.registerBlockEntityRenderer(ModBlockEntities.BROWN_CAMPFIRE_TILE.get(), BrownCampfireBlockEntityRenderer::new);
         event.registerBlockEntityRenderer(ModBlockEntities.CYAN_CAMPFIRE_TILE.get(), CyanCampfireBlockEntityRenderer::new);
