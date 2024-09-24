@@ -1,7 +1,6 @@
 package com.cozary.tintedcampfires.client;
 
 import com.cozary.tintedcampfires.TintedCampfires;
-import com.cozary.tintedcampfires.campfire.colorsRenderer.*;
 import com.cozary.tintedcampfires.init.ModBlockEntities;
 import com.cozary.tintedcampfires.init.particles.ColorCampfireParticle;
 import com.cozary.tintedcampfires.init.particles.ModParticles;

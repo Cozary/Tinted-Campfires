@@ -1,7 +1,5 @@
 @MethodsReturnNonnullByDefault
-@ParametersAreNonnullByDefault
 package com.cozary.tintedcampfires.campfire;
 
 import net.minecraft.MethodsReturnNonnullByDefault;
 
-import javax.annotation.ParametersAreNonnullByDefault;

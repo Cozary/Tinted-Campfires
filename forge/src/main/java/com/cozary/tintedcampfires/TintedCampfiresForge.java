@@ -1,6 +1,5 @@
 package com.cozary.tintedcampfires;
 
-import com.cozary.tintedcampfires.campfire.colorsRenderer.*;
 import com.cozary.tintedcampfires.dispenser.CampfireDispenseBehavior;
 import com.cozary.tintedcampfires.dispenser.SetColorDispenseBehavior;
 import com.cozary.tintedcampfires.init.ModBlockEntities;
