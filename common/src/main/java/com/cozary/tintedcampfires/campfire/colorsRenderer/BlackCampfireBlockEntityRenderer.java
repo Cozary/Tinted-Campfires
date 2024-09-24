@@ -14,11 +14,11 @@ import net.minecraft.core.NonNullList;
 import net.minecraft.world.item.ItemDisplayContext;
 import net.minecraft.world.item.ItemStack;
 
-public class BlackCampfireTileEntityRenderer implements BlockEntityRenderer<BlackCampfireBlockEntity> {
+public class BlackCampfireBlockEntityRenderer implements BlockEntityRenderer<BlackCampfireBlockEntity> {
     private static final float SIZE = 0.375F;
     private final ItemRenderer itemRenderer;
 
-    public BlackCampfireTileEntityRenderer(BlockEntityRendererProvider.Context context) {
+    public BlackCampfireBlockEntityRenderer(BlockEntityRendererProvider.Context context) {
         this.itemRenderer = context.getItemRenderer();
     }
 

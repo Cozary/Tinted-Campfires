@@ -1,6 +1,7 @@
 package com.cozary.tintedcampfires.client;
 
 import com.cozary.tintedcampfires.TintedCampfires;
+import com.cozary.tintedcampfires.campfire.colorsRenderer.*;
 import com.cozary.tintedcampfires.init.ModBlockEntities;
 import com.cozary.tintedcampfires.init.particles.ColorCampfireParticle;
 import com.cozary.tintedcampfires.init.particles.ModParticles;
@@ -37,7 +38,7 @@ public class ClientRegister {
 
     @SubscribeEvent
     public static void registerRenders(EntityRenderersEvent.RegisterRenderers event) {
-        event.registerBlockEntityRenderer(ModBlockEntities.BLACK_CAMPFIRE_TILE.get(), BlackCampfireTileEntityRenderer::new);
+        event.registerBlockEntityRenderer(ModBlockEntities.BLACK_CAMPFIRE_TILE.get(), BlackCampfireBlockEntityRenderer::new);
         event.registerBlockEntityRenderer(ModBlockEntities.BLUE_CAMPFIRE_TILE.get(), BlueCampfireBlockEntityRenderer::new);
         event.registerBlockEntityRenderer(ModBlockEntities.BROWN_CAMPFIRE_TILE.get(), BrownCampfireBlockEntityRenderer::new);
         event.registerBlockEntityRenderer(ModBlockEntities.CYAN_CAMPFIRE_TILE.get(), CyanCampfireBlockEntityRenderer::new);
