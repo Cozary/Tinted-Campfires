@@ -15,6 +15,7 @@ import net.minecraft.util.RandomSource;
 import net.minecraft.world.Containers;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
+import net.minecraft.world.ItemInteractionResult;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
@@ -31,6 +32,7 @@ import net.minecraft.world.level.block.*;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityTicker;
 import net.minecraft.world.level.block.entity.BlockEntityType;
+import net.minecraft.world.level.block.entity.CampfireBlockEntity;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
@@ -132,22 +134,21 @@ public class RedCampfire extends CampfireBlock {
         }) && !(Boolean) $$0.getValue(WATERLOGGED) && !(Boolean) $$0.getValue(LIT);
     }
 
-    public InteractionResult use(BlockState $$0, Level $$1, BlockPos $$2, Player $$3, InteractionHand $$4, BlockHitResult $$5) {
-        BlockEntity $$6 = $$1.getBlockEntity($$2);
-        if ($$6 instanceof RedCampfireBlockEntity $$7) {
-            ItemStack $$8 = $$3.getItemInHand($$4);
-            Optional<RecipeHolder<CampfireCookingRecipe>> $$9 = $$7.getCookableRecipe($$8);
-            if ($$9.isPresent()) {
-                if (!$$1.isClientSide && $$7.placeFood($$3, $$3.getAbilities().instabuild ? $$8.copy() : $$8, ((CampfireCookingRecipe) ((RecipeHolder) $$9.get()).value()).getCookingTime())) {
-                    $$3.awardStat(Stats.INTERACT_WITH_CAMPFIRE);
-                    return InteractionResult.SUCCESS;
+    protected ItemInteractionResult useItemOn(ItemStack $$0, BlockState $$1, Level $$2, BlockPos $$3, Player $$4, InteractionHand $$5, BlockHitResult $$6) {
+        if ($$2.getBlockEntity($$3) instanceof RedCampfireBlockEntity $$8) {
+            ItemStack $$9 = $$4.getItemInHand($$5);
+            Optional<RecipeHolder<CampfireCookingRecipe>> $$10 = $$8.getCookableRecipe($$9);
+            if ($$10.isPresent()) {
+                if (!$$2.isClientSide && $$8.placeFood($$4, $$4.hasInfiniteMaterials() ? $$9.copy() : $$9, $$10.get().value().getCookingTime())) {
+                    $$4.awardStat(Stats.INTERACT_WITH_CAMPFIRE);
+                    return ItemInteractionResult.SUCCESS;
                 }
 
-                return InteractionResult.CONSUME;
+                return ItemInteractionResult.CONSUME;
             }
         }
 
-        return InteractionResult.PASS;
+        return ItemInteractionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION;
     }
 
     public void entityInside(BlockState $$0, Level $$1, BlockPos $$2, Entity $$3) {
