@@ -4,6 +4,7 @@ import com.cozary.tintedcampfires.campfire.colors.RedCampfire;
 import com.cozary.tintedcampfires.init.ModBlockEntities;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.core.HolderLookup;
 import net.minecraft.core.NonNullList;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
@@ -118,26 +119,26 @@ public class RedCampfireBlockEntity extends BlockEntity implements Clearable {
         return this.items;
     }
 
-    public void load(CompoundTag $$0) {
-        super.load($$0);
+    protected void loadAdditional(CompoundTag $$0, HolderLookup.Provider $$1) {
+        super.loadAdditional($$0, $$1);
         this.items.clear();
-        ContainerHelper.loadAllItems($$0, this.items);
-        int[] $$2;
+        ContainerHelper.loadAllItems($$0, this.items, $$1);
+        int[] $$3;
         if ($$0.contains("CookingTimes", 11)) {
-            $$2 = $$0.getIntArray("CookingTimes");
-            System.arraycopy($$2, 0, this.cookingProgress, 0, Math.min(this.cookingTime.length, $$2.length));
+            $$3 = $$0.getIntArray("CookingTimes");
+            System.arraycopy($$3, 0, this.cookingProgress, 0, Math.min(this.cookingTime.length, $$3.length));
         }
 
         if ($$0.contains("CookingTotalTimes", 11)) {
-            $$2 = $$0.getIntArray("CookingTotalTimes");
-            System.arraycopy($$2, 0, this.cookingTime, 0, Math.min(this.cookingTime.length, $$2.length));
+            $$3 = $$0.getIntArray("CookingTotalTimes");
+            System.arraycopy($$3, 0, this.cookingTime, 0, Math.min(this.cookingTime.length, $$3.length));
         }
 
     }
 
-    protected void saveAdditional(CompoundTag $$0) {
-        super.saveAdditional($$0);
-        ContainerHelper.saveAllItems($$0, this.items, true);
+    protected void saveAdditional(CompoundTag $$0, HolderLookup.Provider $$1) {
+        super.saveAdditional($$0, $$1);
+        ContainerHelper.saveAllItems($$0, this.items, true, $$1);
         $$0.putIntArray("CookingTimes", this.cookingProgress);
         $$0.putIntArray("CookingTotalTimes", this.cookingTime);
     }
@@ -146,10 +147,10 @@ public class RedCampfireBlockEntity extends BlockEntity implements Clearable {
         return ClientboundBlockEntityDataPacket.create(this);
     }
 
-    public CompoundTag getUpdateTag() {
-        CompoundTag $$0 = new CompoundTag();
-        ContainerHelper.saveAllItems($$0, this.items, true);
-        return $$0;
+    public CompoundTag getUpdateTag(HolderLookup.Provider $$0) {
+        CompoundTag $$1 = new CompoundTag();
+        ContainerHelper.saveAllItems($$1, this.items, true, $$0);
+        return $$1;
     }
 
     public Optional<RecipeHolder<CampfireCookingRecipe>> getCookableRecipe(ItemStack $$0) {
