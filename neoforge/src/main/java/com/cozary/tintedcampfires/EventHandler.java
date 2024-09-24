@@ -16,6 +16,7 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.CampfireBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import net.neoforged.bus.api.SubscribeEvent;
+import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.fml.common.Mod;
 import net.neoforged.neoforge.event.entity.player.PlayerInteractEvent;
 
@@ -27,7 +28,7 @@ import java.util.function.Supplier;
 import static net.minecraft.world.level.block.CampfireBlock.FACING;
 import static net.minecraft.world.level.block.CampfireBlock.LIT;
 
-@Mod.EventBusSubscriber(modid = "tintedcampfires")
+@EventBusSubscriber(modid = "tintedcampfires")
 public class EventHandler {
 
     private static final Map<Item, CampfireData> campfireMap = new HashMap<>();
