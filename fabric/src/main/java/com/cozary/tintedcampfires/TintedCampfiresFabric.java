@@ -36,7 +36,7 @@ import static net.minecraft.world.level.block.CampfireBlock.LIT;
 
 public class TintedCampfiresFabric implements ModInitializer {
 
-    private static final ResourceKey<CreativeModeTab> ITEM_GROUP = ResourceKey.create(Registries.CREATIVE_MODE_TAB, new ResourceLocation(TintedCampfires.MOD_ID, TintedCampfires.MOD_ID + "_tab"));
+    private static final ResourceKey<CreativeModeTab> ITEM_GROUP = ResourceKey.create(Registries.CREATIVE_MODE_TAB, ResourceLocation.fromNamespaceAndPath(TintedCampfires.MOD_ID, TintedCampfires.MOD_ID + "_tab"));
 
     @Override
     public void onInitialize() {

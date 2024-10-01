@@ -4,6 +4,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.dispenser.BlockSource;
 import net.minecraft.core.dispenser.DefaultDispenseItemBehavior;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.CampfireBlock;
@@ -18,7 +19,7 @@ public class CampfireDispenseBehavior extends DefaultDispenseItemBehavior {
 
     @Override
     protected @NotNull ItemStack execute(BlockSource blockSource, @NotNull ItemStack itemStack) {
-        Level level = blockSource.level();
+        ServerLevel level = blockSource.level();
         Direction direction = blockSource.state().getValue(DispenserBlock.FACING);
         BlockPos blockpos = blockSource.pos().relative(direction);
         BlockState blockstate = level.getBlockState(blockpos);
@@ -31,7 +32,8 @@ public class CampfireDispenseBehavior extends DefaultDispenseItemBehavior {
             level.setBlockAndUpdate(blockpos, blockstate.setValue(BlockStateProperties.LIT, true));
             level.gameEvent(null, GameEvent.BLOCK_CHANGE, blockpos);
 
-            itemStack.hurtAndBreak(1, level.getRandom(), null, () -> itemStack.setCount(0));
+            itemStack.hurtAndBreak(1, level, null, p_348117_ -> {
+            });
 
 
         } else {

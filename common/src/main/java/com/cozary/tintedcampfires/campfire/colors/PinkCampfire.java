@@ -151,12 +151,12 @@ public class PinkCampfire extends CampfireBlock {
         return ItemInteractionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION;
     }
 
-    public void entityInside(BlockState $$0, Level $$1, BlockPos $$2, Entity $$3) {
-        if ((Boolean) $$0.getValue(LIT) && $$3 instanceof LivingEntity && !EnchantmentHelper.hasFrostWalker((LivingEntity) $$3)) {
-            $$3.hurt($$1.damageSources().inFire(), (float) this.fireDamage);
+    protected void entityInside(BlockState pState, Level pLevel, BlockPos pPos, Entity pEntity) {
+        if ((Boolean)pState.getValue(LIT) && pEntity instanceof LivingEntity) {
+            pEntity.hurt(pLevel.damageSources().campfire(), (float)this.fireDamage);
         }
 
-        super.entityInside($$0, $$1, $$2, $$3);
+        super.entityInside(pState, pLevel, pPos, pEntity);
     }
 
     public void onRemove(BlockState $$0, Level $$1, BlockPos $$2, BlockState $$3, boolean $$4) {
