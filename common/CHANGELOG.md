@@ -1,1 +1,5 @@
 # Changelog
+
+### Added
+
+- Spanish Lang
