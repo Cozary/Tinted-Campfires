@@ -7,6 +7,12 @@ base {
     archivesName = "${mod_name}-forge-${minecraft_version}-${version_forge}"
 }
 
+jar {
+    manifest {
+        attributes["MixinConfigs"] = "${mod_id}.mixins.json,${mod_id}.forge.mixins.json"
+    }
+}
+
 minecraft {
     mappings channel: 'official', version: minecraft_version
 
