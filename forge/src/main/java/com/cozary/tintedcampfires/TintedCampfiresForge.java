@@ -3,6 +3,7 @@ package com.cozary.tintedcampfires;
 import com.cozary.tintedcampfires.campfire.colorsRenderer.*;
 import com.cozary.tintedcampfires.dispenser.CampfireDispenseBehavior;
 import com.cozary.tintedcampfires.dispenser.SetColorDispenseBehavior;
+import com.cozary.tintedcampfires.event.EventHandler;
 import com.cozary.tintedcampfires.init.ModBlockEntities;
 import com.cozary.tintedcampfires.init.ModTabs;
 import net.minecraft.world.item.Items;
@@ -25,31 +26,9 @@ public class TintedCampfiresForge {
         TintedCampfires.init();
         ModTabs.CREATIVE_MODE_TABS.register(eventBus);
 
-        eventBus.addListener(this::registerRenders);
         eventBus.addListener(this::setup);
 
-        MinecraftForge.EVENT_BUS.register(new EventHandler());
         MinecraftForge.EVENT_BUS.register(this);
-    }
-
-    @SubscribeEvent
-    public void registerRenders(EntityRenderersEvent.RegisterRenderers event) {
-        event.registerBlockEntityRenderer(ModBlockEntities.BLACK_CAMPFIRE_TILE.get(), BlackCampfireBlockEntityRenderer::new);
-        event.registerBlockEntityRenderer(ModBlockEntities.BLUE_CAMPFIRE_TILE.get(), BlueCampfireBlockEntityRenderer::new);
-        event.registerBlockEntityRenderer(ModBlockEntities.BROWN_CAMPFIRE_TILE.get(), BrownCampfireBlockEntityRenderer::new);
-        event.registerBlockEntityRenderer(ModBlockEntities.CYAN_CAMPFIRE_TILE.get(), CyanCampfireBlockEntityRenderer::new);
-        event.registerBlockEntityRenderer(ModBlockEntities.GRAY_CAMPFIRE_TILE.get(), GrayCampfireBlockEntityRenderer::new);
-        event.registerBlockEntityRenderer(ModBlockEntities.GREEN_CAMPFIRE_TILE.get(), GreenCampfireBlockEntityRenderer::new);
-        event.registerBlockEntityRenderer(ModBlockEntities.LIGHT_BLUE_CAMPFIRE_TILE.get(), LightBlueCampfireBlockEntityRenderer::new);
-        event.registerBlockEntityRenderer(ModBlockEntities.LIGHT_GRAY_CAMPFIRE_TILE.get(), LightGrayCampfireBlockEntityRenderer::new);
-        event.registerBlockEntityRenderer(ModBlockEntities.LIME_CAMPFIRE_TILE.get(), LimeCampfireBlockEntityRenderer::new);
-        event.registerBlockEntityRenderer(ModBlockEntities.MAGENTA_CAMPFIRE_TILE.get(), MagentaCampfireBlockEntityRenderer::new);
-        event.registerBlockEntityRenderer(ModBlockEntities.ORANGE_CAMPFIRE_TILE.get(), OrangeCampfireBlockEntityRenderer::new);
-        event.registerBlockEntityRenderer(ModBlockEntities.PINK_CAMPFIRE_TILE.get(), PinkCampfireBlockEntityRenderer::new);
-        event.registerBlockEntityRenderer(ModBlockEntities.PURPLE_CAMPFIRE_TILE.get(), PurpleCampfireBlockEntityRenderer::new);
-        event.registerBlockEntityRenderer(ModBlockEntities.RED_CAMPFIRE_TILE.get(), RedCampfireBlockEntityRenderer::new);
-        event.registerBlockEntityRenderer(ModBlockEntities.WHITE_CAMPFIRE_TILE.get(), WhiteCampfireBlockEntityRenderer::new);
-        event.registerBlockEntityRenderer(ModBlockEntities.YELLOW_CAMPFIRE_TILE.get(), YellowCampfireBlockEntityRenderer::new);
     }
 
     private void setup(final FMLCommonSetupEvent event) {
