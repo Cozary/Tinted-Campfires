@@ -15,7 +15,7 @@ public class ModTabs {
 
     private static final ResourceKey<CreativeModeTab> ITEM_GROUP = ResourceKey.create(Registries.CREATIVE_MODE_TAB, ResourceLocation.fromNamespaceAndPath(TintedCampfires.MOD_ID, TintedCampfires.MOD_ID + "_tab"));
 
-    public static void loadClass(){
+    public static void loadClass() {
         Registry.register(BuiltInRegistries.CREATIVE_MODE_TAB, ITEM_GROUP, FabricItemGroup.builder()
                 .title(Component.translatable("itemGroup.tintedcampfires"))
                 .icon(() -> new ItemStack(ModBlocks.PINK_CAMPFIRE.get()))

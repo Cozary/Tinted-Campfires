@@ -79,7 +79,7 @@ jar {
 
 processResources {
     var expandProps = [
-            'version_forge'               : version_forge,
+            'version_forge'                : version_forge,
             'version_fabric'               : version_fabric,
             'version_neoforge'             : version_neoforge,
 

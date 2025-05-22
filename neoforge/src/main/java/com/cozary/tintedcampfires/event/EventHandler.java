@@ -14,7 +14,6 @@ import java.util.function.Supplier;
 public class EventHandler {
 
 
-
     @SubscribeEvent
     public static void replaceCampfire(PlayerInteractEvent.RightClickBlock event) {
         InteractionResult result = CampfireDyeHandler.tryReplaceCampfire(

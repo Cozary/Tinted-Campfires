@@ -1,9 +1,9 @@
 package com.cozary.tintedcampfires.util;
 
-import com.cozary.tintedcampfires.TintedCampfires;
 import com.cozary.tintedcampfires.init.ModBlocks;
 import com.cozary.tintedcampfires.init.particles.ModParticles;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
 import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.RandomSource;
@@ -17,7 +17,6 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.CampfireBlock;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.core.Direction;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -86,5 +85,6 @@ public class CampfireDyeHandler {
         return InteractionResult.PASS;
     }
 
-    public record CampfireData(Supplier<Block> blockSupplier, Supplier<ParticleOptions> particleSupplier) {}
+    public record CampfireData(Supplier<Block> blockSupplier, Supplier<ParticleOptions> particleSupplier) {
+    }
 }
