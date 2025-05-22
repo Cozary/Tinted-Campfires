@@ -8,12 +8,12 @@ import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 
-@Mod.EventBusSubscriber(modid = TintedCampfires.MOD_ID, bus = Mod.EventBusSubscriber.Bus.MOD)
+@Mod.EventBusSubscriber(modid = TintedCampfires.MOD_ID)
 public class EventHandler {
 
 
     @SubscribeEvent
-    public void replaceCampfire(PlayerInteractEvent.RightClickBlock event) {
+    public static void replaceCampfire(PlayerInteractEvent.RightClickBlock event) {
         InteractionResult result = CampfireDyeHandler.tryReplaceCampfire(
                 event.getEntity(), event.getLevel(), event.getHand(), event.getPos()
         );
