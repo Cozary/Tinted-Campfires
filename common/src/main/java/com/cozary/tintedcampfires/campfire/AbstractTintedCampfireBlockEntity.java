@@ -9,6 +9,7 @@ import net.minecraft.core.component.DataComponents;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.Clearable;
@@ -34,51 +35,50 @@ public abstract class AbstractTintedCampfireBlockEntity extends BlockEntity impl
     protected final NonNullList<ItemStack> items;
     protected final int[] cookingProgress;
     protected final int[] cookingTime;
-    protected final RecipeManager.CachedCheck<SingleRecipeInput, CampfireCookingRecipe> quickCheck;
 
     public AbstractTintedCampfireBlockEntity(BlockEntityType<?> type, BlockPos pos, BlockState state) {
         super(type, pos, state);
         this.items = NonNullList.withSize(NUM_SLOTS, ItemStack.EMPTY);
         this.cookingProgress = new int[NUM_SLOTS];
         this.cookingTime = new int[NUM_SLOTS];
-        this.quickCheck = RecipeManager.createCheck(RecipeType.CAMPFIRE_COOKING);
     }
 
-    public static void cookTick(Level level, BlockPos pos, BlockState state, AbstractTintedCampfireBlockEntity blockEntity) {
+    public static void cookTick(ServerLevel level, BlockPos blockPos, BlockState blockState, AbstractTintedCampfireBlockEntity abstractTintedCampfireBlockEntity, RecipeManager.CachedCheck<SingleRecipeInput, CampfireCookingRecipe> recipeCachedCheck) {
         boolean hasChanges = false;
 
-        for (int i = 0; i < blockEntity.items.size(); ++i) {
-            ItemStack stack = blockEntity.items.get(i);
+        for (int i = 0; i < abstractTintedCampfireBlockEntity.items.size(); ++i) {
+            ItemStack stack = abstractTintedCampfireBlockEntity.items.get(i);
             if (!stack.isEmpty()) {
                 hasChanges = true;
-                blockEntity.cookingProgress[i]++;
-                if (blockEntity.cookingProgress[i] >= blockEntity.cookingTime[i]) {
+                abstractTintedCampfireBlockEntity.cookingProgress[i]++;
+                if (abstractTintedCampfireBlockEntity.cookingProgress[i] >= abstractTintedCampfireBlockEntity.cookingTime[i]) {
                     SingleRecipeInput input = new SingleRecipeInput(stack);
-                    ItemStack result = blockEntity.quickCheck.getRecipeFor(input, level)
-                            .map(recipe -> recipe.value().assemble(input, level.registryAccess()))
-                            .orElse(stack);
+                    ItemStack result = (ItemStack) recipeCachedCheck.getRecipeFor(input, level)
+                            .map(recipe -> {
+                                return ((CampfireCookingRecipe) recipe.value()).assemble(input, level.registryAccess());
+                            }).orElse(stack);
                     if (result.isItemEnabled(level.enabledFeatures())) {
-                        Containers.dropItemStack(level, pos.getX(), pos.getY(), pos.getZ(), result);
-                        blockEntity.items.set(i, ItemStack.EMPTY);
-                        level.sendBlockUpdated(pos, state, state, 3);
-                        level.gameEvent(GameEvent.BLOCK_CHANGE, pos, GameEvent.Context.of(state));
+                        Containers.dropItemStack(level, blockPos.getX(), blockPos.getY(), blockPos.getZ(), result);
+                        abstractTintedCampfireBlockEntity.items.set(i, ItemStack.EMPTY);
+                        level.sendBlockUpdated(blockPos, blockState, blockState, 3);
+                        level.gameEvent(GameEvent.BLOCK_CHANGE, blockPos, GameEvent.Context.of(blockState));
                     }
                 }
             }
         }
 
         if (hasChanges) {
-            setChanged(level, pos, state);
+            setChanged(level, blockPos, blockState);
         }
     }
 
-    public static void cooldownTick(Level level, BlockPos pos, BlockState state, AbstractTintedCampfireBlockEntity blockEntity) {
+    public static void cooldownTick(Level level, BlockPos pos, BlockState state, AbstractTintedCampfireBlockEntity abstractTintedCampfireBlockEntity) {
         boolean hasChanges = false;
 
-        for (int i = 0; i < blockEntity.items.size(); ++i) {
-            if (blockEntity.cookingProgress[i] > 0) {
+        for (int i = 0; i < abstractTintedCampfireBlockEntity.items.size(); ++i) {
+            if (abstractTintedCampfireBlockEntity.cookingProgress[i] > 0) {
                 hasChanges = true;
-                blockEntity.cookingProgress[i] = Mth.clamp(blockEntity.cookingProgress[i] - BURN_COOL_SPEED, 0, blockEntity.cookingTime[i]);
+                abstractTintedCampfireBlockEntity.cookingProgress[i] = Mth.clamp(abstractTintedCampfireBlockEntity.cookingProgress[i] - BURN_COOL_SPEED, 0, abstractTintedCampfireBlockEntity.cookingTime[i]);
             }
         }
 
@@ -87,7 +87,7 @@ public abstract class AbstractTintedCampfireBlockEntity extends BlockEntity impl
         }
     }
 
-    public static void particleTick(Level level, BlockPos pos, BlockState state, AbstractTintedCampfireBlockEntity blockEntity) {
+    public static void particleTick(Level level, BlockPos pos, BlockState state, AbstractTintedCampfireBlockEntity abstractTintedCampfireBlockEntity) {
         RandomSource random = level.random;
 
         if (random.nextFloat() < 0.11F) {
@@ -98,8 +98,8 @@ public abstract class AbstractTintedCampfireBlockEntity extends BlockEntity impl
 
         int baseDir = state.getValue(CampfireBlock.FACING).get2DDataValue();
 
-        for (int i = 0; i < blockEntity.items.size(); ++i) {
-            if (!blockEntity.items.get(i).isEmpty() && random.nextFloat() < 0.2F) {
+        for (int i = 0; i < abstractTintedCampfireBlockEntity.items.size(); ++i) {
+            if (!abstractTintedCampfireBlockEntity.items.get(i).isEmpty() && random.nextFloat() < 0.2F) {
                 Direction direction = Direction.from2DDataValue(Math.floorMod(i + baseDir, 4));
                 float offset = 0.3125F;
                 double dx = pos.getX() + 0.5 - direction.getStepX() * offset + direction.getClockWise().getStepX() * offset;
@@ -115,42 +115,6 @@ public abstract class AbstractTintedCampfireBlockEntity extends BlockEntity impl
 
     public NonNullList<ItemStack> getItems() {
         return this.items;
-    }
-
-    @Override
-    public void clearContent() {
-        this.items.clear();
-    }
-
-    public Optional<RecipeHolder<CampfireCookingRecipe>> getCookableRecipe(ItemStack stack) {
-        return this.items.stream().noneMatch(ItemStack::isEmpty)
-                ? Optional.empty()
-                : this.quickCheck.getRecipeFor(new SingleRecipeInput(stack), this.level);
-    }
-
-    public boolean placeFood(@Nullable LivingEntity entity, ItemStack stack, int cookTime) {
-        for (int i = 0; i < this.items.size(); ++i) {
-            if (this.items.get(i).isEmpty()) {
-                this.cookingTime[i] = cookTime;
-                this.cookingProgress[i] = 0;
-                this.items.set(i, stack.consumeAndReturn(1, entity));
-                this.level.gameEvent(GameEvent.BLOCK_CHANGE, this.getBlockPos(), GameEvent.Context.of(entity, this.getBlockState()));
-                this.markUpdated();
-                return true;
-            }
-        }
-        return false;
-    }
-
-    protected void markUpdated() {
-        this.setChanged();
-        this.getLevel().sendBlockUpdated(this.getBlockPos(), this.getBlockState(), this.getBlockState(), 3);
-    }
-
-    public void dowse() {
-        if (this.level != null) {
-            this.markUpdated();
-        }
     }
 
     @Override
@@ -175,15 +139,52 @@ public abstract class AbstractTintedCampfireBlockEntity extends BlockEntity impl
     }
 
     @Override
+    public ClientboundBlockEntityDataPacket getUpdatePacket() {
+        return ClientboundBlockEntityDataPacket.create(this);
+    }
+
+    @Override
     public CompoundTag getUpdateTag(HolderLookup.Provider registries) {
         CompoundTag tag = new CompoundTag();
         ContainerHelper.saveAllItems(tag, this.items, true, registries);
         return tag;
     }
 
+    public boolean placeFood(ServerLevel level, @Nullable LivingEntity entity, ItemStack stack) {
+        for (int i = 0; i < this.items.size(); ++i) {
+            ItemStack itemStack = (ItemStack) this.items.get(i);
+            if (itemStack.isEmpty()) {
+                Optional<RecipeHolder<CampfireCookingRecipe>> recipeHolder = level.recipeAccess().getRecipeFor(RecipeType.CAMPFIRE_COOKING, new SingleRecipeInput(stack), level);
+
+                if (recipeHolder.isEmpty()) {
+                    return false;
+                }
+
+                this.cookingTime[i] = ((CampfireCookingRecipe) ((RecipeHolder) recipeHolder.get()).value()).cookingTime();
+                this.cookingProgress[i] = 0;
+                this.items.set(i, stack.consumeAndReturn(1, entity));
+                level.gameEvent(GameEvent.BLOCK_CHANGE, this.getBlockPos(), GameEvent.Context.of(entity, this.getBlockState()));
+                this.markUpdated();
+                return true;
+            }
+        }
+        return false;
+    }
+
+    protected void markUpdated() {
+        this.setChanged();
+        this.getLevel().sendBlockUpdated(this.getBlockPos(), this.getBlockState(), this.getBlockState(), 3);
+    }
+
     @Override
-    public ClientboundBlockEntityDataPacket getUpdatePacket() {
-        return ClientboundBlockEntityDataPacket.create(this);
+    public void clearContent() {
+        this.items.clear();
+    }
+
+    public void dowse() {
+        if (this.level != null) {
+            this.markUpdated();
+        }
     }
 
     @Override

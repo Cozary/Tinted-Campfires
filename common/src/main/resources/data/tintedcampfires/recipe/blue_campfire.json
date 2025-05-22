@@ -1,0 +1,11 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    "minecraft:campfire",
+    "minecraft:blue_dye"
+  ],
+  "result": {
+    "id": "tintedcampfires:blue_campfire",
+    "count": 1
+  }
+}

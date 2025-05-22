@@ -1,17 +1,12 @@
 package com.cozary.tintedcampfires;
 
-import com.cozary.tintedcampfires.campfire.colorsRenderer.*;
 import com.cozary.tintedcampfires.dispenser.CampfireDispenseBehavior;
 import com.cozary.tintedcampfires.dispenser.SetColorDispenseBehavior;
-import com.cozary.tintedcampfires.event.EventHandler;
-import com.cozary.tintedcampfires.init.ModBlockEntities;
 import com.cozary.tintedcampfires.init.ModTabs;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.block.DispenserBlock;
-import net.minecraftforge.client.event.EntityRenderersEvent;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.eventbus.api.IEventBus;
-import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;

@@ -1,39 +1,47 @@
 package com.cozary.tintedcampfires.campfire;
 
 
+import com.cozary.tintedcampfires.TintedCampfires;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.particles.ParticleOptions;
+import net.minecraft.core.registries.Registries;
+import net.minecraft.resources.ResourceKey;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.stats.Stats;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.Containers;
 import net.minecraft.world.InteractionHand;
-import net.minecraft.world.ItemInteractionResult;
+import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.crafting.CampfireCookingRecipe;
-import net.minecraft.world.item.crafting.RecipeHolder;
+import net.minecraft.world.item.crafting.RecipePropertySet;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.CampfireBlock;
+import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityTicker;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.state.properties.BlockStateProperties;
+import net.minecraft.world.level.block.state.properties.NoteBlockInstrument;
+import net.minecraft.world.level.material.MapColor;
 import net.minecraft.world.phys.BlockHitResult;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.Optional;
+import java.util.function.ToIntFunction;
 
 public abstract class AbstractTintedCampfire extends CampfireBlock {
 
     protected final boolean spawnParticles;
     protected final int fireDamage;
 
-    public AbstractTintedCampfire(boolean spawnParticles, int fireDamage, BlockBehaviour.Properties properties) {
-        super(true, 1, properties);
+    public AbstractTintedCampfire(boolean spawnParticles, int fireDamage, BlockBehaviour.Properties properties, String name) {
+        super(true, 1, properties.of().mapColor(MapColor.PODZOL).instrument(NoteBlockInstrument.BASS).strength(2.0F).sound(SoundType.WOOD).lightLevel(litBlockEmission(15)).noOcclusion().ignitedByLava().setId(ResourceKey.create(Registries.BLOCK, ResourceLocation.fromNamespaceAndPath(TintedCampfires.MOD_ID, name))));
         this.spawnParticles = spawnParticles;
         this.fireDamage = fireDamage;
         this.registerDefaultState(this.stateDefinition.any()
@@ -43,20 +51,30 @@ public abstract class AbstractTintedCampfire extends CampfireBlock {
                 .setValue(FACING, Direction.NORTH));
     }
 
+    public static ToIntFunction<BlockState> litBlockEmission(int p_50760_) {
+        return (p_50763_) -> {
+            return p_50763_.getValue(BlockStateProperties.LIT) ? p_50760_ : 0;
+        };
+    }
+
     @Override
-    protected ItemInteractionResult useItemOn(ItemStack itemStack, BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hit) {
+    protected InteractionResult useItemOn(ItemStack itemStack, BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hit) {
         BlockEntity entity = level.getBlockEntity(pos);
         if (entity instanceof AbstractTintedCampfireBlockEntity campfireEntity) {
-            Optional<RecipeHolder<CampfireCookingRecipe>> recipe = campfireEntity.getCookableRecipe(itemStack);
-            if (recipe.isPresent()) {
-                if (!level.isClientSide && campfireEntity.placeFood(player, player.hasInfiniteMaterials() ? itemStack.copy() : itemStack, recipe.get().value().getCookingTime())) {
-                    player.awardStat(Stats.INTERACT_WITH_CAMPFIRE);
-                    return ItemInteractionResult.SUCCESS;
+            ItemStack itemstack = player.getItemInHand(hand);
+            if (level.recipeAccess().propertySet(RecipePropertySet.CAMPFIRE_INPUT).test(itemstack)) {
+                if (level instanceof ServerLevel) {
+                    ServerLevel serverlevel = (ServerLevel) level;
+                    if (campfireEntity.placeFood(serverlevel, player, itemstack)) {
+                        player.awardStat(Stats.INTERACT_WITH_CAMPFIRE);
+                        return InteractionResult.SUCCESS_SERVER;
+                    }
                 }
-                return ItemInteractionResult.CONSUME;
+
+                return InteractionResult.CONSUME;
             }
         }
-        return ItemInteractionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION;
+        return InteractionResult.TRY_WITH_EMPTY_HAND;
     }
 
     @Override
