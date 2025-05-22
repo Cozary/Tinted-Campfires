@@ -1,51 +1,28 @@
 package com.cozary.tintedcampfires.campfire.colorsRenderer;
 
 
-import com.cozary.tintedcampfires.TintedCampfires;
-import com.cozary.tintedcampfires.campfire.colors.BlackCampfire;
+import com.cozary.tintedcampfires.campfire.AbstractTintedCampfireBlockEntityRenderer;
+import com.cozary.tintedcampfires.campfire.colors.BlueCampfire;
 import com.cozary.tintedcampfires.campfire.colorsBlockEntity.BlueCampfireBlockEntity;
-import com.mojang.blaze3d.vertex.PoseStack;
-import com.mojang.math.Axis;
-import net.minecraft.client.renderer.MultiBufferSource;
-import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
 import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
-import net.minecraft.client.renderer.entity.ItemRenderer;
 import net.minecraft.core.Direction;
 import net.minecraft.core.NonNullList;
-import net.minecraft.world.item.ItemDisplayContext;
 import net.minecraft.world.item.ItemStack;
 
-public class BlueCampfireBlockEntityRenderer implements BlockEntityRenderer<BlueCampfireBlockEntity> {
-    private static final float SIZE = 0.375F;
-    private final ItemRenderer itemRenderer;
+public class BlueCampfireBlockEntityRenderer extends AbstractTintedCampfireBlockEntityRenderer<BlueCampfireBlockEntity> {
 
     public BlueCampfireBlockEntityRenderer(BlockEntityRendererProvider.Context context) {
-        this.itemRenderer = context.getItemRenderer();
+        super(context);
     }
 
     @Override
-    public void render(BlueCampfireBlockEntity colorCampfireTileEntity, float partialTick, PoseStack poseStack, MultiBufferSource multiBufferSource, int packedLight, int packedOverlay) {
-        Direction direction = colorCampfireTileEntity.getBlockState().getValue(BlackCampfire.FACING);
-        NonNullList<ItemStack> nonnulllist = colorCampfireTileEntity.getItems();
-        TintedCampfires.LOG.debug(String.valueOf(nonnulllist));
-        int i = (int) colorCampfireTileEntity.getBlockPos().asLong();
-
-        for (int j = 0; j < nonnulllist.size(); ++j) {
-            ItemStack itemstack = nonnulllist.get(j);
-            if (itemstack != ItemStack.EMPTY) {
-                poseStack.pushPose();
-                poseStack.translate(0.5D, 0.44921875D, 0.5D);
-                Direction direction1 = Direction.from2DDataValue((j + direction.get2DDataValue()) % 4);
-                float f = -direction1.toYRot();
-                poseStack.mulPose(Axis.YP.rotationDegrees(f));
-                poseStack.mulPose(Axis.XP.rotationDegrees(90.0F));
-                poseStack.translate(-0.3125D, -0.3125D, 0.0D);
-                poseStack.scale(0.375F, 0.375F, 0.375F);
-                this.itemRenderer.renderStatic(itemstack, ItemDisplayContext.FIXED, packedLight, packedOverlay, poseStack, multiBufferSource, colorCampfireTileEntity.getLevel(), i + j);
-                poseStack.popPose();
-            }
-        }
-
+    protected Direction getFacingDirection(BlueCampfireBlockEntity entity) {
+        return entity.getBlockState().getValue(BlueCampfire.FACING);
     }
 
+    @Override
+    protected NonNullList<ItemStack> getItems(BlueCampfireBlockEntity entity) {
+        return entity.getItems();
+    }
 }
+
