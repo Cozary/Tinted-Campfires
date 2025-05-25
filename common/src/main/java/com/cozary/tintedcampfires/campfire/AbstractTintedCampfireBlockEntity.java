@@ -4,6 +4,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.NonNullList;
+import net.minecraft.core.component.DataComponentGetter;
 import net.minecraft.core.component.DataComponentMap;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.core.particles.ParticleTypes;
@@ -23,12 +24,15 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.CampfireBlock;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
+import net.minecraft.world.level.block.entity.CampfireBlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.gameevent.GameEvent;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.Arrays;
 import java.util.Optional;
 
+//CampfireBlockEntity
 public abstract class AbstractTintedCampfireBlockEntity extends BlockEntity implements Clearable {
     protected static final int BURN_COOL_SPEED = 2;
     protected static final int NUM_SLOTS = 4;
@@ -122,12 +126,17 @@ public abstract class AbstractTintedCampfireBlockEntity extends BlockEntity impl
         super.loadAdditional(tag, registries);
         this.items.clear();
         ContainerHelper.loadAllItems(tag, this.items, registries);
-        if (tag.contains("CookingTimes", 11)) {
-            System.arraycopy(tag.getIntArray("CookingTimes"), 0, this.cookingProgress, 0, NUM_SLOTS);
-        }
-        if (tag.contains("CookingTotalTimes", 11)) {
-            System.arraycopy(tag.getIntArray("CookingTotalTimes"), 0, this.cookingTime, 0, NUM_SLOTS);
-        }
+
+        tag.getIntArray("CookingTimes").ifPresentOrElse((savedCookingProgress) -> {
+            System.arraycopy(savedCookingProgress, 0, this.cookingProgress, 0, Math.min(this.cookingTime.length, savedCookingProgress.length));
+        }, () -> {
+            Arrays.fill(this.cookingProgress, 0);
+        });
+        tag.getIntArray("CookingTotalTimes").ifPresentOrElse((savedCookingTotalTimes) -> {
+            System.arraycopy(savedCookingTotalTimes, 0, this.cookingTime, 0, Math.min(this.cookingTime.length, savedCookingTotalTimes.length));
+        }, () -> {
+            Arrays.fill(this.cookingTime, 0);
+        });
     }
 
     @Override
@@ -181,27 +190,29 @@ public abstract class AbstractTintedCampfireBlockEntity extends BlockEntity impl
         this.items.clear();
     }
 
-    public void dowse() {
+    @Override
+    public void preRemoveSideEffects(BlockPos blockPos, BlockState blockState) {
         if (this.level != null) {
-            this.markUpdated();
+            Containers.dropContents(this.level, blockPos, this.getItems());
         }
+
     }
 
     @Override
-    public void removeComponentsFromTag(CompoundTag tag) {
-        tag.remove("Items");
-    }
-
-    @Override
-    protected void applyImplicitComponents(BlockEntity.DataComponentInput input) {
+    protected void applyImplicitComponents(DataComponentGetter input) {
         super.applyImplicitComponents(input);
-        input.getOrDefault(DataComponents.CONTAINER, ItemContainerContents.EMPTY).copyInto(this.getItems());
+        ((ItemContainerContents)input.getOrDefault(DataComponents.CONTAINER, ItemContainerContents.EMPTY)).copyInto(this.getItems());
     }
 
     @Override
     protected void collectImplicitComponents(DataComponentMap.Builder builder) {
         super.collectImplicitComponents(builder);
         builder.set(DataComponents.CONTAINER, ItemContainerContents.fromItems(this.getItems()));
+    }
+
+    @Override
+    public void removeComponentsFromTag(CompoundTag p_332690_) {
+        p_332690_.remove("Items");
     }
 }
 

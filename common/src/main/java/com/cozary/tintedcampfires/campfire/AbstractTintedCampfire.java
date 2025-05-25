@@ -77,7 +77,7 @@ public abstract class AbstractTintedCampfire extends CampfireBlock {
         return InteractionResult.TRY_WITH_EMPTY_HAND;
     }
 
-    @Override
+/*    @Override
     public void onRemove(BlockState state, Level level, BlockPos pos, BlockState newState, boolean isMoving) {
         if (!state.is(newState.getBlock())) {
             BlockEntity entity = level.getBlockEntity(pos);
@@ -86,7 +86,7 @@ public abstract class AbstractTintedCampfire extends CampfireBlock {
             }
             super.onRemove(state, level, pos, newState, isMoving);
         }
-    }
+    }*/
 
     protected abstract ParticleOptions getCustomParticle();
 

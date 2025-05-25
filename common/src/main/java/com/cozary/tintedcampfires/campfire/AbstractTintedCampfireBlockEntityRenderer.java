@@ -6,12 +6,15 @@ import com.mojang.math.Axis;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
 import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
+import net.minecraft.client.renderer.blockentity.CampfireRenderer;
 import net.minecraft.client.renderer.entity.ItemRenderer;
 import net.minecraft.core.Direction;
 import net.minecraft.core.NonNullList;
 import net.minecraft.world.item.ItemDisplayContext;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.phys.Vec3;
 
+//CampfireRenderer
 public abstract class AbstractTintedCampfireBlockEntityRenderer<T extends AbstractTintedCampfireBlockEntity> implements BlockEntityRenderer<T> {
     private static final float SIZE = 0.375F;
     protected final ItemRenderer itemRenderer;
@@ -21,7 +24,7 @@ public abstract class AbstractTintedCampfireBlockEntityRenderer<T extends Abstra
     }
 
     @Override
-    public void render(T campfireEntity, float partialTick, PoseStack poseStack, MultiBufferSource bufferSource, int packedLight, int packedOverlay) {
+    public void render(T campfireEntity, float partialTick, PoseStack poseStack, MultiBufferSource bufferSource, int packedLight, int packedOverlay, Vec3 vec3) {
         Direction direction = getFacingDirection(campfireEntity);
         NonNullList<ItemStack> items = getItems(campfireEntity);
         int seed = (int) campfireEntity.getBlockPos().asLong();
