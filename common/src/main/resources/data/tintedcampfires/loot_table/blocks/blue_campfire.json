@@ -26,7 +26,7 @@
                   }
                 }
               ],
-              "name": "minecraft:campfire"
+              "name": "tintedcampfires:blue_campfire"
             },
             {
               "type": "minecraft:item",
@@ -50,5 +50,5 @@
       "rolls": 1.0
     }
   ],
-  "random_sequence": "tintedcampfires:blue_campfire"
+  "random_sequence": "tintedcampfires:blocks/blue_campfire"
 }

@@ -1,11 +1,12 @@
 {
   "type": "minecraft:crafting_shapeless",
+  "category": "misc",
   "ingredients": [
-    "minecraft:campfire",
-    "minecraft:purple_dye"
+    "minecraft:purple_dye",
+    "minecraft:campfire"
   ],
   "result": {
-    "id": "tintedcampfires:purple_campfire",
-    "count": 1
+    "count": 1,
+    "id": "tintedcampfires:purple_campfire"
   }
 }

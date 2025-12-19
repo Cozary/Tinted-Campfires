@@ -26,7 +26,7 @@
                   }
                 }
               ],
-              "name": "minecraft:campfire"
+              "name": "tintedcampfires:pink_campfire"
             },
             {
               "type": "minecraft:item",
@@ -50,5 +50,5 @@
       "rolls": 1.0
     }
   ],
-  "random_sequence": "tintedcampfires:pink_campfire"
+  "random_sequence": "tintedcampfires:blocks/pink_campfire"
 }

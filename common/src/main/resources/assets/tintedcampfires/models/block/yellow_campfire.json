@@ -1,8 +1,7 @@
 {
-  "parent": "block/template_campfire",
+  "parent": "minecraft:block/template_campfire",
   "textures": {
-    "fire": "tintedcampfires:block/yellow_campfire",
+    "fire": "tintedcampfires:block/yellow_campfire_fire",
     "lit_log": "tintedcampfires:block/yellow_campfire_log_lit"
-  },
-  "render_type": "cutout"
+  }
 }

@@ -1,11 +1,12 @@
 {
   "type": "minecraft:crafting_shapeless",
+  "category": "misc",
   "ingredients": [
-    "minecraft:campfire",
-    "minecraft:cyan_dye"
+    "minecraft:cyan_dye",
+    "minecraft:campfire"
   ],
   "result": {
-    "id": "tintedcampfires:cyan_campfire",
-    "count": 1
+    "count": 1,
+    "id": "tintedcampfires:cyan_campfire"
   }
 }
