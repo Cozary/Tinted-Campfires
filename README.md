@@ -26,7 +26,7 @@ I do this as a hobby but it still consumes some of my time. So if you really lik
 <summary>🌍 Translation Progress %</summary>
 <br>
 
-Here are the translations, which are managed through Crowdin at the following link: **[Crowdin Floral Enchantment](https://crowdin.com/project/floral-enchantment)**. You can contribute to the translations there or by submitting a PR to the project. If the language you are looking for is not available on Crowdin, you can ask me to enable it.
+Here are the translations, which are managed through Crowdin at the following link: **[Crowdin Tinted Campfires](https://crowdin.com/project/tinted-campfires)**. You can contribute to the translations there or by submitting a PR to the project. If the language you are looking for is not available on Crowdin, you can ask me to enable it.
 
 | Language |  Status                                                                                                                                                                                                                                                                                  |
 | :--- |:-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
