@@ -60,7 +60,7 @@ public class SetColorDispenseBehavior extends DefaultDispenseItemBehavior {
             double d1 = rand.nextGaussian() * 0.02D;
             double d2 = rand.nextGaussian() * 0.02D;
 
-            if (!level.isClientSide) {
+            if (!level.isClientSide()) {
                 CampfireData campfireData = campfireDataMap.get(item);
                 if (campfireData != null) {
                     level.setBlockAndUpdate(pos, campfireData.blockState.setValue(CampfireBlock.FACING, direction1));

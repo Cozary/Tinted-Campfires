@@ -58,7 +58,7 @@ public class CampfireDyeHandler {
         Direction direction = state.getValue(CampfireBlock.FACING);
         Boolean isLit = state.getValue(CampfireBlock.LIT);
 
-        if (!level.isClientSide && CAMPFIRE_MAP.containsKey(item)) {
+        if (!level.isClientSide() && CAMPFIRE_MAP.containsKey(item)) {
             CampfireData data = CAMPFIRE_MAP.get(item);
             level.setBlockAndUpdate(pos, data.blockSupplier().get().defaultBlockState()
                     .setValue(CampfireBlock.FACING, direction)

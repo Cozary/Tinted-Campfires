@@ -3,50 +3,70 @@ package com.cozary.tintedcampfires.campfire;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Axis;
-import net.minecraft.client.renderer.MultiBufferSource;
+import net.minecraft.client.renderer.SubmitNodeCollector;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
 import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
-import net.minecraft.client.renderer.entity.ItemRenderer;
+import net.minecraft.client.renderer.blockentity.state.CampfireRenderState;
+import net.minecraft.client.renderer.feature.ModelFeatureRenderer;
+import net.minecraft.client.renderer.item.ItemModelResolver;
+import net.minecraft.client.renderer.item.ItemStackRenderState;
+import net.minecraft.client.renderer.state.CameraRenderState;
+import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.core.Direction;
-import net.minecraft.core.NonNullList;
+import net.minecraft.world.entity.ItemOwner;
 import net.minecraft.world.item.ItemDisplayContext;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.phys.Vec3;
 
+import java.util.ArrayList;
+import java.util.List;
+
 //CampfireRenderer
-public abstract class AbstractTintedCampfireBlockEntityRenderer<T extends AbstractTintedCampfireBlockEntity> implements BlockEntityRenderer<T> {
+public abstract class AbstractTintedCampfireBlockEntityRenderer<T extends AbstractTintedCampfireBlockEntity> implements BlockEntityRenderer<T, CampfireRenderState> {
     private static final float SIZE = 0.375F;
-    protected final ItemRenderer itemRenderer;
+    protected final ItemModelResolver itemRenderer;
 
     public AbstractTintedCampfireBlockEntityRenderer(BlockEntityRendererProvider.Context context) {
-        this.itemRenderer = context.getItemRenderer();
+        this.itemRenderer = context.itemModelResolver();
     }
 
-    @Override
-    public void render(T campfireEntity, float partialTick, PoseStack poseStack, MultiBufferSource bufferSource, int packedLight, int packedOverlay, Vec3 vec3) {
-        Direction direction = getFacingDirection(campfireEntity);
-        NonNullList<ItemStack> items = getItems(campfireEntity);
-        int seed = (int) campfireEntity.getBlockPos().asLong();
+    public CampfireRenderState createRenderState() {
+        return new CampfireRenderState();
+    }
 
-        for (int i = 0; i < items.size(); ++i) {
-            ItemStack stack = items.get(i);
-            if (!stack.isEmpty()) {
+    public void extractRenderState(AbstractTintedCampfireBlockEntity blockEntity, CampfireRenderState renderState, float partialTick, Vec3 cameraPosition, ModelFeatureRenderer.CrumblingOverlay breakProgress) {
+        renderState.facing = (Direction) blockEntity.getBlockState().getValue(AbstractTintedCampfire.FACING);
+        int i = (int) blockEntity.getBlockPos().asLong();
+        renderState.items = new ArrayList();
+
+        for (int j = 0; j < blockEntity.getItems().size(); ++j) {
+            ItemStackRenderState itemstackrenderstate = new ItemStackRenderState();
+            this.itemRenderer.updateForTopItem(itemstackrenderstate, (ItemStack) blockEntity.getItems().get(j), ItemDisplayContext.FIXED, blockEntity.getLevel(), (ItemOwner) null, i + j);
+            renderState.items.add(itemstackrenderstate);
+        }
+
+    }
+
+    public void submit(CampfireRenderState renderState, PoseStack poseStack, SubmitNodeCollector nodeCollector, CameraRenderState cameraRenderState) {
+        Direction direction = renderState.facing;
+        List<ItemStackRenderState> list = renderState.items;
+
+        for (int i = 0; i < list.size(); ++i) {
+            ItemStackRenderState itemstackrenderstate = (ItemStackRenderState) list.get(i);
+            if (!itemstackrenderstate.isEmpty()) {
                 poseStack.pushPose();
-                poseStack.translate(0.5D, 0.44921875D, 0.5D);
-                Direction itemDirection = Direction.from2DDataValue((i + direction.get2DDataValue()) % 4);
-                float rotation = -itemDirection.toYRot();
-                poseStack.mulPose(Axis.YP.rotationDegrees(rotation));
+                poseStack.translate(0.5F, 0.44921875F, 0.5F);
+                Direction direction1 = Direction.from2DDataValue((i + direction.get2DDataValue()) % 4);
+                float f = -direction1.toYRot();
+                poseStack.mulPose(Axis.YP.rotationDegrees(f));
                 poseStack.mulPose(Axis.XP.rotationDegrees(90.0F));
-                poseStack.translate(-0.3125D, -0.3125D, 0.0D);
-                poseStack.scale(SIZE, SIZE, SIZE);
-                this.itemRenderer.renderStatic(stack, ItemDisplayContext.FIXED, packedLight, packedOverlay, poseStack, bufferSource, campfireEntity.getLevel(), seed + i);
+                poseStack.translate(-0.3125F, -0.3125F, 0.0F);
+                poseStack.scale(0.375F, 0.375F, 0.375F);
+                itemstackrenderstate.submit(poseStack, nodeCollector, renderState.lightCoords, OverlayTexture.NO_OVERLAY, 0);
                 poseStack.popPose();
             }
         }
+
     }
-
-    protected abstract Direction getFacingDirection(T campfireEntity);
-
-    protected abstract NonNullList<ItemStack> getItems(T campfireEntity);
 }
 
