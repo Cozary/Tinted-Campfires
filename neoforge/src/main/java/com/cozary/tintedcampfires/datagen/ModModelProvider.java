@@ -2,31 +2,29 @@ package com.cozary.tintedcampfires.datagen;
 
 import com.cozary.tintedcampfires.TintedCampfires;
 import com.cozary.tintedcampfires.init.ModBlocks;
-import com.cozary.tintedcampfires.init.ModItems;
-import com.mojang.math.Quadrant;
 import net.minecraft.client.data.models.BlockModelGenerators;
 import net.minecraft.client.data.models.ItemModelGenerators;
 import net.minecraft.client.data.models.ModelProvider;
-import net.minecraft.client.data.models.blockstates.MultiPartGenerator;
+import net.minecraft.client.data.models.MultiVariant;
 import net.minecraft.client.data.models.blockstates.MultiVariantGenerator;
-import net.minecraft.client.data.models.blockstates.PropertyDispatch;
 import net.minecraft.client.data.models.model.*;
-import net.minecraft.client.renderer.block.model.Variant;
-import net.minecraft.client.renderer.block.model.VariantMutator;
-import net.minecraft.client.resources.model.UnbakedModel;
-import net.minecraft.core.Direction;
-import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.data.PackOutput;
-import net.minecraft.world.item.Item;
-import net.minecraft.world.item.ItemDisplayContext;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
-import net.neoforged.neoforge.client.model.generators.template.ExtendedModelTemplateBuilder;
 
-import static net.minecraft.client.data.models.BlockModelGenerators.plainVariant;
+import java.util.Optional;
+
+import static net.minecraft.client.data.models.BlockModelGenerators.*;
 
 public class ModModelProvider extends ModelProvider {
+
+    private static final ModelTemplate TWO_LAYER_ITEM = new ModelTemplate(
+            Optional.of(ResourceLocation.parse("item/generated")),
+            Optional.empty(),
+            TextureSlot.LAYER0,
+            TextureSlot.LAYER1
+    );
 
     public ModModelProvider(PackOutput output) {
         super(output, TintedCampfires.MOD_ID);
@@ -35,22 +33,46 @@ public class ModModelProvider extends ModelProvider {
     @Override
     protected void registerModels(BlockModelGenerators blockModels, ItemModelGenerators itemModels) {
 
-        blockModels.createCampfires(ModBlocks.BLACK_CAMPFIRE.get());
-        blockModels.createCampfires(ModBlocks.BLUE_CAMPFIRE.get());
-        blockModels.createCampfires(ModBlocks.BROWN_CAMPFIRE.get());
-        blockModels.createCampfires(ModBlocks.GREEN_CAMPFIRE.get());
-        blockModels.createCampfires(ModBlocks.RED_CAMPFIRE.get());
-        blockModels.createCampfires(ModBlocks.WHITE_CAMPFIRE.get());
-        blockModels.createCampfires(ModBlocks.YELLOW_CAMPFIRE.get());
-        blockModels.createCampfires(ModBlocks.LIGHT_BLUE_CAMPFIRE.get());
-        blockModels.createCampfires(ModBlocks.LIGHT_GRAY_CAMPFIRE.get());
-        blockModels.createCampfires(ModBlocks.LIME_CAMPFIRE.get());
-        blockModels.createCampfires(ModBlocks.MAGENTA_CAMPFIRE.get());
-        blockModels.createCampfires(ModBlocks.ORANGE_CAMPFIRE.get());
-        blockModels.createCampfires(ModBlocks.PINK_CAMPFIRE.get());
-        blockModels.createCampfires(ModBlocks.CYAN_CAMPFIRE.get());
-        blockModels.createCampfires(ModBlocks.GRAY_CAMPFIRE.get());
-        blockModels.createCampfires(ModBlocks.PURPLE_CAMPFIRE.get());
+        createCampfires(blockModels, itemModels, ModBlocks.BLACK_CAMPFIRE.get());
+        createCampfires(blockModels, itemModels, ModBlocks.BLUE_CAMPFIRE.get());
+        createCampfires(blockModels, itemModels, ModBlocks.BROWN_CAMPFIRE.get());
+        createCampfires(blockModels, itemModels, ModBlocks.GREEN_CAMPFIRE.get());
+        createCampfires(blockModels, itemModels, ModBlocks.RED_CAMPFIRE.get());
+        createCampfires(blockModels, itemModels, ModBlocks.WHITE_CAMPFIRE.get());
+        createCampfires(blockModels, itemModels, ModBlocks.YELLOW_CAMPFIRE.get());
+        createCampfires(blockModels, itemModels, ModBlocks.LIGHT_BLUE_CAMPFIRE.get());
+        createCampfires(blockModels, itemModels, ModBlocks.LIGHT_GRAY_CAMPFIRE.get());
+        createCampfires(blockModels, itemModels, ModBlocks.LIME_CAMPFIRE.get());
+        createCampfires(blockModels, itemModels, ModBlocks.MAGENTA_CAMPFIRE.get());
+        createCampfires(blockModels, itemModels, ModBlocks.ORANGE_CAMPFIRE.get());
+        createCampfires(blockModels, itemModels, ModBlocks.PINK_CAMPFIRE.get());
+        createCampfires(blockModels, itemModels, ModBlocks.CYAN_CAMPFIRE.get());
+        createCampfires(blockModels, itemModels, ModBlocks.GRAY_CAMPFIRE.get());
+        createCampfires(blockModels, itemModels, ModBlocks.PURPLE_CAMPFIRE.get());
 
+    }
+
+    public void createCampfires(BlockModelGenerators blockModels, ItemModelGenerators itemModels, Block... campfireBlocks) {
+        MultiVariant multivariantOff = plainVariant(ModelLocationUtils.decorateBlockModelLocation("campfire_off"));
+
+        for (Block block : campfireBlocks) {
+            MultiVariant multivariantOn = plainVariant(ModelTemplates.CAMPFIRE.create(block, TextureMapping.campfire(block), blockModels.modelOutput));
+
+            ResourceLocation itemModelLoc = ModelLocationUtils.getModelLocation(block.asItem());
+            ResourceLocation overlayTexture = ResourceLocation.fromNamespaceAndPath("tintedcampfires", "item/campfire_item_overlay");
+
+            TextureMapping itemTextures = new TextureMapping()
+                    .put(TextureSlot.LAYER0, itemModelLoc)
+                    .put(TextureSlot.LAYER1, overlayTexture);
+
+            TWO_LAYER_ITEM.create(itemModelLoc, itemTextures, itemModels.modelOutput);
+            itemModels.itemModelOutput.accept(block.asItem(), ItemModelUtils.plainModel(itemModelLoc));
+
+            blockModels.blockStateOutput.accept(
+                    MultiVariantGenerator.dispatch(block)
+                            .with(createBooleanModelDispatch(BlockStateProperties.LIT, multivariantOn, multivariantOff))
+                            .with(ROTATION_HORIZONTAL_FACING_ALT)
+            );
+        }
     }
 }

@@ -15,15 +15,11 @@ import java.util.function.Supplier;
 
 public class ModRecipeProvider extends RecipeProvider {
 
-    protected ModRecipeProvider(HolderLookup.Provider registries, RecipeOutput output) {
-        super(registries, output);
-    }
-
     public static final Supplier<List<FloralEntry>> TINTED_CAMPFIRES = () -> List.of(
             new FloralEntry(ModItems.BLACK_CAMPFIRE_ITEM.get(), Items.BLACK_DYE),
-            new FloralEntry(ModItems.BLUE_CAMPFIRE_ITEM.get(),  Items.BLUE_DYE),
-            new FloralEntry(ModItems.BROWN_CAMPFIRE_ITEM.get(),  Items.BROWN_DYE),
-            new FloralEntry(ModItems.GREEN_CAMPFIRE_ITEM.get(),  Items.GREEN_DYE),
+            new FloralEntry(ModItems.BLUE_CAMPFIRE_ITEM.get(), Items.BLUE_DYE),
+            new FloralEntry(ModItems.BROWN_CAMPFIRE_ITEM.get(), Items.BROWN_DYE),
+            new FloralEntry(ModItems.GREEN_CAMPFIRE_ITEM.get(), Items.GREEN_DYE),
             new FloralEntry(ModItems.RED_CAMPFIRE_ITEM.get(), Items.RED_DYE),
             new FloralEntry(ModItems.WHITE_CAMPFIRE_ITEM.get(), Items.WHITE_DYE),
             new FloralEntry(ModItems.YELLOW_CAMPFIRE_ITEM.get(), Items.YELLOW_DYE),
@@ -36,7 +32,11 @@ public class ModRecipeProvider extends RecipeProvider {
             new FloralEntry(ModItems.CYAN_CAMPFIRE_ITEM.get(), Items.CYAN_DYE),
             new FloralEntry(ModItems.GRAY_CAMPFIRE_ITEM.get(), Items.GRAY_DYE),
             new FloralEntry(ModItems.PURPLE_CAMPFIRE_ITEM.get(), Items.PURPLE_DYE)
-   );
+    );
+
+    protected ModRecipeProvider(HolderLookup.Provider registries, RecipeOutput output) {
+        super(registries, output);
+    }
 
     @Override
     protected void buildRecipes() {

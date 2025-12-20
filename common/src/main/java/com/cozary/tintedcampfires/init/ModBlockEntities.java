@@ -13,7 +13,9 @@ public class ModBlockEntities {
     public static final RegistrationProvider<BlockEntityType<?>> TILE_ENTITIES = RegistrationProvider.get(Registries.BLOCK_ENTITY_TYPE, TintedCampfires.MOD_ID);
 
     public static void loadClass() {
-    }    public static final RegistryObject<BlockEntityType<BlackCampfireBlockEntity>> BLACK_CAMPFIRE_TILE = TILE_ENTITIES.register(
+    }
+
+    public static final RegistryObject<BlockEntityType<BlackCampfireBlockEntity>> BLACK_CAMPFIRE_TILE = TILE_ENTITIES.register(
             "black_campfire_tile", () -> new BlockEntityType<>(BlackCampfireBlockEntity::new, Set.of(ModBlocks.BLACK_CAMPFIRE.get())));
 
     public static final RegistryObject<BlockEntityType<BlueCampfireBlockEntity>> BLUE_CAMPFIRE_TILE = TILE_ENTITIES.register(

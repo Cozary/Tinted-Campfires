@@ -1,7 +1,7 @@
 {
   "parent": "minecraft:item/generated",
   "textures": {
-    "layer0": "tintedcampfires:item/orange_campfire",
+    "layer0": "tintedcampfires:item/item/lime_campfire",
     "layer1": "tintedcampfires:item/campfire_item_overlay"
   }
 }
