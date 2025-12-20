@@ -1,5 +1,6 @@
 package com.cozary.tintedcampfires.campfire;
 
+import com.cozary.tintedcampfires.TintedCampfires;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.HolderLookup;
@@ -12,6 +13,7 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.Mth;
+import net.minecraft.util.ProblemReporter;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.Clearable;
 import net.minecraft.world.ContainerHelper;
@@ -27,6 +29,9 @@ import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.entity.CampfireBlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.gameevent.GameEvent;
+import net.minecraft.world.level.storage.TagValueOutput;
+import net.minecraft.world.level.storage.ValueInput;
+import net.minecraft.world.level.storage.ValueOutput;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Arrays;
@@ -122,17 +127,17 @@ public abstract class AbstractTintedCampfireBlockEntity extends BlockEntity impl
     }
 
     @Override
-    protected void loadAdditional(CompoundTag tag, HolderLookup.Provider registries) {
-        super.loadAdditional(tag, registries);
+    protected void loadAdditional(ValueInput input) {
+        super.loadAdditional(input);
         this.items.clear();
-        ContainerHelper.loadAllItems(tag, this.items, registries);
+        ContainerHelper.loadAllItems(input, this.items);
 
-        tag.getIntArray("CookingTimes").ifPresentOrElse((savedCookingProgress) -> {
+        input.getIntArray("CookingTimes").ifPresentOrElse((savedCookingProgress) -> {
             System.arraycopy(savedCookingProgress, 0, this.cookingProgress, 0, Math.min(this.cookingTime.length, savedCookingProgress.length));
         }, () -> {
             Arrays.fill(this.cookingProgress, 0);
         });
-        tag.getIntArray("CookingTotalTimes").ifPresentOrElse((savedCookingTotalTimes) -> {
+        input.getIntArray("CookingTotalTimes").ifPresentOrElse((savedCookingTotalTimes) -> {
             System.arraycopy(savedCookingTotalTimes, 0, this.cookingTime, 0, Math.min(this.cookingTime.length, savedCookingTotalTimes.length));
         }, () -> {
             Arrays.fill(this.cookingTime, 0);
@@ -140,11 +145,11 @@ public abstract class AbstractTintedCampfireBlockEntity extends BlockEntity impl
     }
 
     @Override
-    protected void saveAdditional(CompoundTag tag, HolderLookup.Provider registries) {
-        super.saveAdditional(tag, registries);
-        ContainerHelper.saveAllItems(tag, this.items, true, registries);
-        tag.putIntArray("CookingTimes", this.cookingProgress);
-        tag.putIntArray("CookingTotalTimes", this.cookingTime);
+    protected void saveAdditional(ValueOutput output) {
+        super.saveAdditional(output);
+        ContainerHelper.saveAllItems(output, this.items, true);
+        output.putIntArray("CookingTimes", this.cookingProgress);
+        output.putIntArray("CookingTotalTimes", this.cookingTime);
     }
 
     @Override
@@ -154,9 +159,25 @@ public abstract class AbstractTintedCampfireBlockEntity extends BlockEntity impl
 
     @Override
     public CompoundTag getUpdateTag(HolderLookup.Provider registries) {
-        CompoundTag tag = new CompoundTag();
-        ContainerHelper.saveAllItems(tag, this.items, true, registries);
-        return tag;
+        ProblemReporter.ScopedCollector problemreporter$scopedcollector = new ProblemReporter.ScopedCollector(this.problemPath(), TintedCampfires.LOG);
+
+        CompoundTag compoundtag;
+        try {
+            TagValueOutput tagvalueoutput = TagValueOutput.createWithContext(problemreporter$scopedcollector, registries);
+            ContainerHelper.saveAllItems(tagvalueoutput, this.items, true);
+            compoundtag = tagvalueoutput.buildResult();
+        } catch (Throwable var7) {
+            try {
+                problemreporter$scopedcollector.close();
+            } catch (Throwable var6) {
+                var7.addSuppressed(var6);
+            }
+
+            throw var7;
+        }
+
+        problemreporter$scopedcollector.close();
+        return compoundtag;
     }
 
     public boolean placeFood(ServerLevel level, @Nullable LivingEntity entity, ItemStack stack) {
@@ -211,8 +232,8 @@ public abstract class AbstractTintedCampfireBlockEntity extends BlockEntity impl
     }
 
     @Override
-    public void removeComponentsFromTag(CompoundTag p_332690_) {
-        p_332690_.remove("Items");
+    public void removeComponentsFromTag(ValueOutput output) {
+        output.discard("Items");
     }
 }
 

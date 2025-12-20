@@ -6,24 +6,22 @@ import com.cozary.tintedcampfires.init.ModTabs;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.block.DispenserBlock;
 import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 
 @Mod(TintedCampfires.MOD_ID)
-@Mod.EventBusSubscriber(modid = TintedCampfires.MOD_ID, bus = Mod.EventBusSubscriber.Bus.MOD)
 public class TintedCampfiresForge {
 
-    public TintedCampfiresForge() {
-        final IEventBus eventBus = FMLJavaModLoadingContext.get().getModEventBus();
+    public TintedCampfiresForge(FMLJavaModLoadingContext context) {
+        var eventBus = context.getModBusGroup();
 
         TintedCampfires.init();
         ModTabs.CREATIVE_MODE_TABS.register(eventBus);
 
-        eventBus.addListener(this::setup);
+        FMLCommonSetupEvent.getBus(eventBus).addListener(this::setup);
 
-        MinecraftForge.EVENT_BUS.register(this);
+        //MinecraftForge.EVENT_BUS.register(this);
     }
 
     private void setup(final FMLCommonSetupEvent event) {
