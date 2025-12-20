@@ -19,8 +19,6 @@ public class TintedCampfiresForge {
         ModTabs.CREATIVE_MODE_TABS.register(eventBus);
 
         FMLCommonSetupEvent.getBus(eventBus).addListener(this::setup);
-
-        //MinecraftForge.EVENT_BUS.register(this);
     }
 
     private void setup(final FMLCommonSetupEvent event) {

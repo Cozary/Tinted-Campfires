@@ -1,15 +1,22 @@
 package com.cozary.tintedcampfires.init.particles;
 
 import net.minecraft.client.multiplayer.ClientLevel;
-import net.minecraft.client.particle.*;
+import net.minecraft.client.particle.Particle;
+import net.minecraft.client.particle.ParticleProvider;
+import net.minecraft.client.particle.SingleQuadParticle;
+import net.minecraft.client.particle.SpriteSet;
+import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.core.particles.SimpleParticleType;
+import net.minecraft.util.RandomSource;
+import org.jetbrains.annotations.Nullable;
 
 
-public class ColorCampfireParticle extends TextureSheetParticle {
+public class ColorCampfireParticle extends SingleQuadParticle {
 
-    public ColorCampfireParticle(ClientLevel world, double x, double y, double z) {
-        super(world, x, y, z, 0.0D, 0.0D, 0.0D);
+    public ColorCampfireParticle(ClientLevel world, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed, TextureAtlasSprite sprite) {
+        super(world, x, y, z, xSpeed, ySpeed, zSpeed, sprite);
+
         this.xd *= 0.8F;
         this.yd *= 0.8F;
         this.zd *= 0.8F;
@@ -19,14 +26,14 @@ public class ColorCampfireParticle extends TextureSheetParticle {
     }
 
     @Override
-    public ParticleRenderType getRenderType() {
-        return ParticleRenderType.PARTICLE_SHEET_OPAQUE;
-    }
-
-    @Override
     public float getQuadSize(float scaleFactor) {
         float f = ((float) this.age + scaleFactor) / (float) this.lifetime;
         return this.quadSize * (1.0F - f * f);
+    }
+
+    @Override
+    protected Layer getLayer() {
+        return Layer.OPAQUE;
     }
 
     @Override
@@ -34,6 +41,7 @@ public class ColorCampfireParticle extends TextureSheetParticle {
         this.xo = this.x;
         this.yo = this.y;
         this.zo = this.z;
+
         float f = (float) this.age / (float) this.lifetime;
         if (this.random.nextFloat() > f) {
             this.level.addParticle(ParticleTypes.SMOKE, this.x, this.y, this.z, this.xd, this.yd, this.zd);
@@ -51,14 +59,12 @@ public class ColorCampfireParticle extends TextureSheetParticle {
                 this.xd *= 0.7F;
                 this.zd *= 0.7F;
             }
-
         }
     }
 
     @Override
     public int getLightColor(float partialTick) {
         int i = super.getLightColor(partialTick);
-        int j = 240;
         int k = i >> 16 & 255;
         return 240 | k << 16;
     }
@@ -70,10 +76,13 @@ public class ColorCampfireParticle extends TextureSheetParticle {
             this.spriteSet = sprite;
         }
 
+        @Nullable
         @Override
-        public Particle createParticle(SimpleParticleType typeIn, ClientLevel worldIn, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed) {
-            ColorCampfireParticle particle = new ColorCampfireParticle(worldIn, x, y, z);
-            particle.pickSprite(this.spriteSet);
+        public Particle createParticle(SimpleParticleType type, ClientLevel level, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed, RandomSource random) {
+
+            TextureAtlasSprite sprite = this.spriteSet.get(random);
+            ColorCampfireParticle particle = new ColorCampfireParticle(level, x, y, z, xSpeed, ySpeed, zSpeed, sprite);
+
             return particle;
         }
     }
