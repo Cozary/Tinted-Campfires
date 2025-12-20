@@ -6,8 +6,8 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.core.registries.Registries;
+import net.minecraft.resources.Identifier;
 import net.minecraft.resources.ResourceKey;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
@@ -40,7 +40,7 @@ public abstract class AbstractTintedCampfire extends CampfireBlock {
     protected final int fireDamage;
 
     public AbstractTintedCampfire(boolean spawnParticles, int fireDamage, BlockBehaviour.Properties properties, String name) {
-        super(true, 1, properties.of().mapColor(MapColor.PODZOL).instrument(NoteBlockInstrument.BASS).strength(2.0F).sound(SoundType.WOOD).lightLevel(litBlockEmission(15)).noOcclusion().ignitedByLava().setId(ResourceKey.create(Registries.BLOCK, ResourceLocation.fromNamespaceAndPath(TintedCampfires.MOD_ID, name))));
+        super(true, 1, properties.of().mapColor(MapColor.PODZOL).instrument(NoteBlockInstrument.BASS).strength(2.0F).sound(SoundType.WOOD).lightLevel(litBlockEmission(15)).noOcclusion().ignitedByLava().setId(ResourceKey.create(Registries.BLOCK, Identifier.fromNamespaceAndPath(TintedCampfires.MOD_ID, name))));
         this.spawnParticles = spawnParticles;
         this.fireDamage = fireDamage;
         this.registerDefaultState(this.stateDefinition.any()

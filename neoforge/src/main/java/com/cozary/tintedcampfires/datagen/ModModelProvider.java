@@ -9,7 +9,7 @@ import net.minecraft.client.data.models.MultiVariant;
 import net.minecraft.client.data.models.blockstates.MultiVariantGenerator;
 import net.minecraft.client.data.models.model.*;
 import net.minecraft.data.PackOutput;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 
@@ -20,7 +20,7 @@ import static net.minecraft.client.data.models.BlockModelGenerators.*;
 public class ModModelProvider extends ModelProvider {
 
     private static final ModelTemplate TWO_LAYER_ITEM = new ModelTemplate(
-            Optional.of(ResourceLocation.parse("item/generated")),
+            Optional.of(Identifier.parse("item/generated")),
             Optional.empty(),
             TextureSlot.LAYER0,
             TextureSlot.LAYER1
@@ -58,8 +58,8 @@ public class ModModelProvider extends ModelProvider {
         for (Block block : campfireBlocks) {
             MultiVariant multivariantOn = plainVariant(ModelTemplates.CAMPFIRE.create(block, TextureMapping.campfire(block), blockModels.modelOutput));
 
-            ResourceLocation itemModelLoc = ModelLocationUtils.getModelLocation(block.asItem());
-            ResourceLocation overlayTexture = ResourceLocation.fromNamespaceAndPath("tintedcampfires", "item/campfire_item_overlay");
+            Identifier itemModelLoc = ModelLocationUtils.getModelLocation(block.asItem());
+            Identifier overlayTexture = Identifier.fromNamespaceAndPath("tintedcampfires", "item/campfire_item_overlay");
 
             TextureMapping itemTextures = new TextureMapping()
                     .put(TextureSlot.LAYER0, itemModelLoc)
