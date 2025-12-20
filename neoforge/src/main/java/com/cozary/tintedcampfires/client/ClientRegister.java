@@ -9,7 +9,6 @@ import com.cozary.tintedcampfires.init.particles.ModParticles;
 import net.minecraft.client.renderer.ItemBlockRenderTypes;
 import net.minecraft.client.renderer.chunk.ChunkSectionLayer;
 import net.neoforged.api.distmarker.Dist;
-import net.neoforged.api.distmarker.OnlyIn;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.fml.event.lifecycle.FMLClientSetupEvent;
@@ -19,7 +18,6 @@ import net.neoforged.neoforge.client.event.RegisterParticleProvidersEvent;
 @EventBusSubscriber(value = Dist.CLIENT, modid = TintedCampfires.MOD_ID)
 public class ClientRegister {
 
-    @OnlyIn(Dist.CLIENT)
     @SubscribeEvent
     public static void registerFactories(RegisterParticleProvidersEvent event) {
         event.registerSpriteSet(ModParticles.BLACK_LAVA.get(), ColorCampfireParticle.Factory::new);
