@@ -24,6 +24,5 @@ public class BlockRenderRegister implements ClientModInitializer {
         BlockRenderLayerMap.putBlock(ModBlocks.CYAN_CAMPFIRE.get(), ChunkSectionLayer.CUTOUT);
         BlockRenderLayerMap.putBlock(ModBlocks.GRAY_CAMPFIRE.get(), ChunkSectionLayer.CUTOUT);
         BlockRenderLayerMap.putBlock(ModBlocks.PURPLE_CAMPFIRE.get(), ChunkSectionLayer.CUTOUT);
-
     }
 }

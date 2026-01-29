@@ -80,4 +80,3 @@ public class SetColorDispenseBehavior extends DefaultDispenseItemBehavior {
     public record CampfireData(BlockState blockState, ParticleOptions particle) {
     }
 }
-

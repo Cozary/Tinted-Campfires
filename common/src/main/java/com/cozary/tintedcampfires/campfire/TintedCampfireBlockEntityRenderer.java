@@ -1,6 +1,5 @@
 package com.cozary.tintedcampfires.campfire;
 
-
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Axis;
 import net.minecraft.client.renderer.SubmitNodeCollector;
@@ -16,17 +15,17 @@ import net.minecraft.core.Direction;
 import net.minecraft.world.entity.ItemOwner;
 import net.minecraft.world.item.ItemDisplayContext;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.block.CampfireBlock;
 import net.minecraft.world.phys.Vec3;
 
 import java.util.ArrayList;
 import java.util.List;
 
-//CampfireRenderer
-public abstract class AbstractTintedCampfireBlockEntityRenderer<T extends AbstractTintedCampfireBlockEntity> implements BlockEntityRenderer<T, CampfireRenderState> {
+public class TintedCampfireBlockEntityRenderer implements BlockEntityRenderer<TintedCampfireBlockEntity, CampfireRenderState> {
     private static final float SIZE = 0.375F;
     protected final ItemModelResolver itemRenderer;
 
-    public AbstractTintedCampfireBlockEntityRenderer(BlockEntityRendererProvider.Context context) {
+    public TintedCampfireBlockEntityRenderer(BlockEntityRendererProvider.Context context) {
         this.itemRenderer = context.itemModelResolver();
     }
 
@@ -34,8 +33,8 @@ public abstract class AbstractTintedCampfireBlockEntityRenderer<T extends Abstra
         return new CampfireRenderState();
     }
 
-    public void extractRenderState(AbstractTintedCampfireBlockEntity blockEntity, CampfireRenderState renderState, float partialTick, Vec3 cameraPosition, ModelFeatureRenderer.CrumblingOverlay breakProgress) {
-        renderState.facing = (Direction) blockEntity.getBlockState().getValue(AbstractTintedCampfire.FACING);
+    public void extractRenderState(TintedCampfireBlockEntity blockEntity, CampfireRenderState renderState, float partialTick, Vec3 cameraPosition, ModelFeatureRenderer.CrumblingOverlay breakProgress) {
+        renderState.facing = (Direction) blockEntity.getBlockState().getValue(CampfireBlock.FACING);
         int i = (int) blockEntity.getBlockPos().asLong();
         renderState.items = new ArrayList();
 
@@ -69,4 +68,3 @@ public abstract class AbstractTintedCampfireBlockEntityRenderer<T extends Abstra
 
     }
 }
-
