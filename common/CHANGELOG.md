@@ -1,10 +1,5 @@
-# Changelog 1.21.8 Port
+# Changelog 1.21.11
 
-### Added
+### Fixed
 
-- Datagen!
-- Added "euphoria-patches" mod as optional
-
-### Removed
-
-- Shimmer compat, since is outdated.
+- Crash caused by incompatibility with Barbeque's Delight.
