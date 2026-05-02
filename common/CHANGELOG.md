@@ -1,9 +1,5 @@
-# Changelog
+# Changelog 1.21.11
 
-### Added
+### Fixed
 
-- Spanish Lang
-
-### Changed
-
-- Refactored code
+- Crash caused by incompatibility with Barbeque's Delight.
