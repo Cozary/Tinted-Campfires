@@ -55,6 +55,10 @@ public class CampfireDyeHandler {
             return InteractionResult.PASS;
         }
 
+        if (!state.hasProperty(CampfireBlock.FACING) || !state.hasProperty(CampfireBlock.LIT)) {
+            return InteractionResult.PASS;
+        }
+
         Direction direction = state.getValue(CampfireBlock.FACING);
         Boolean isLit = state.getValue(CampfireBlock.LIT);
 
