@@ -1,7 +1,7 @@
 package com.cozary.tintedcampfires.init;
 
 import com.cozary.tintedcampfires.TintedCampfires;
-import net.fabricmc.fabric.api.itemgroup.v1.FabricItemGroup;
+import net.fabricmc.fabric.api.creativetab.v1.FabricCreativeModeTab;
 import net.minecraft.core.Registry;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
@@ -16,7 +16,7 @@ public class ModTabs {
     private static final ResourceKey<CreativeModeTab> ITEM_GROUP = ResourceKey.create(Registries.CREATIVE_MODE_TAB, Identifier.fromNamespaceAndPath(TintedCampfires.MOD_ID, TintedCampfires.MOD_ID + "_tab"));
 
     public static void loadClass() {
-        Registry.register(BuiltInRegistries.CREATIVE_MODE_TAB, ITEM_GROUP, FabricItemGroup.builder()
+        Registry.register(BuiltInRegistries.CREATIVE_MODE_TAB, ITEM_GROUP, FabricCreativeModeTab.builder()
                 .title(Component.translatable("itemGroup.tintedcampfires"))
                 .icon(() -> new ItemStack(ModBlocks.PINK_CAMPFIRE.get()))
                 .displayItems((parameters, output) -> ModItems.CREATIVE_TAB_ITEMS.forEach((item) -> output.accept(item.get())))

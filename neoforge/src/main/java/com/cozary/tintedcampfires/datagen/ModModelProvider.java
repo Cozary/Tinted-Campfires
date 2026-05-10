@@ -8,6 +8,7 @@ import net.minecraft.client.data.models.ModelProvider;
 import net.minecraft.client.data.models.MultiVariant;
 import net.minecraft.client.data.models.blockstates.MultiVariantGenerator;
 import net.minecraft.client.data.models.model.*;
+import net.minecraft.client.resources.model.sprite.Material;
 import net.minecraft.data.PackOutput;
 import net.minecraft.resources.Identifier;
 import net.minecraft.world.level.block.Block;
@@ -59,10 +60,12 @@ public class ModModelProvider extends ModelProvider {
             MultiVariant multivariantOn = plainVariant(ModelTemplates.CAMPFIRE.create(block, TextureMapping.campfire(block), blockModels.modelOutput));
 
             Identifier itemModelLoc = ModelLocationUtils.getModelLocation(block.asItem());
-            Identifier overlayTexture = Identifier.fromNamespaceAndPath("tintedcampfires", "item/campfire_item_overlay");
+
+            Material baseItemTexture = new Material(itemModelLoc);
+            Material overlayTexture = new Material(Identifier.fromNamespaceAndPath("tintedcampfires", "item/campfire_item_overlay"));
 
             TextureMapping itemTextures = new TextureMapping()
-                    .put(TextureSlot.LAYER0, itemModelLoc)
+                    .put(TextureSlot.LAYER0, baseItemTexture)
                     .put(TextureSlot.LAYER1, overlayTexture);
 
             TWO_LAYER_ITEM.create(itemModelLoc, itemTextures, itemModels.modelOutput);

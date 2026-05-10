@@ -63,11 +63,12 @@ public class ColorCampfireParticle extends SingleQuadParticle {
     }
 
     @Override
-    public int getLightColor(float partialTick) {
-        int i = super.getLightColor(partialTick);
+    protected int getLightCoords(float a) {
+        int i = super.getLightCoords(a);
         int k = i >> 16 & 255;
         return 240 | k << 16;
     }
+
 
     public static class Factory implements ParticleProvider<SimpleParticleType> {
         private final SpriteSet spriteSet;

@@ -6,7 +6,6 @@ import com.cozary.tintedcampfires.init.ModBlockEntities;
 import com.cozary.tintedcampfires.init.ModBlocks;
 import com.cozary.tintedcampfires.init.particles.ColorCampfireParticle;
 import com.cozary.tintedcampfires.init.particles.ModParticles;
-import net.minecraft.client.renderer.ItemBlockRenderTypes;
 import net.minecraft.client.renderer.chunk.ChunkSectionLayer;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.bus.api.SubscribeEvent;
@@ -41,25 +40,5 @@ public class ClientRegister {
     @SubscribeEvent
     public static void registerRenders(EntityRenderersEvent.RegisterRenderers event) {
         event.registerBlockEntityRenderer(ModBlockEntities.TINTED_CAMPFIRE.get(), TintedCampfireBlockEntityRenderer::new);
-    }
-
-    @SubscribeEvent
-    public static void onClientSetup(FMLClientSetupEvent event) {
-        ItemBlockRenderTypes.setRenderLayer(ModBlocks.BLACK_CAMPFIRE.get(), ChunkSectionLayer.CUTOUT);
-        ItemBlockRenderTypes.setRenderLayer(ModBlocks.BLUE_CAMPFIRE.get(), ChunkSectionLayer.CUTOUT);
-        ItemBlockRenderTypes.setRenderLayer(ModBlocks.BROWN_CAMPFIRE.get(), ChunkSectionLayer.CUTOUT);
-        ItemBlockRenderTypes.setRenderLayer(ModBlocks.CYAN_CAMPFIRE.get(), ChunkSectionLayer.CUTOUT);
-        ItemBlockRenderTypes.setRenderLayer(ModBlocks.GRAY_CAMPFIRE.get(), ChunkSectionLayer.CUTOUT);
-        ItemBlockRenderTypes.setRenderLayer(ModBlocks.GREEN_CAMPFIRE.get(), ChunkSectionLayer.CUTOUT);
-        ItemBlockRenderTypes.setRenderLayer(ModBlocks.LIGHT_BLUE_CAMPFIRE.get(), ChunkSectionLayer.CUTOUT);
-        ItemBlockRenderTypes.setRenderLayer(ModBlocks.LIGHT_GRAY_CAMPFIRE.get(), ChunkSectionLayer.CUTOUT);
-        ItemBlockRenderTypes.setRenderLayer(ModBlocks.LIME_CAMPFIRE.get(), ChunkSectionLayer.CUTOUT);
-        ItemBlockRenderTypes.setRenderLayer(ModBlocks.MAGENTA_CAMPFIRE.get(), ChunkSectionLayer.CUTOUT);
-        ItemBlockRenderTypes.setRenderLayer(ModBlocks.ORANGE_CAMPFIRE.get(), ChunkSectionLayer.CUTOUT);
-        ItemBlockRenderTypes.setRenderLayer(ModBlocks.PINK_CAMPFIRE.get(), ChunkSectionLayer.CUTOUT);
-        ItemBlockRenderTypes.setRenderLayer(ModBlocks.PURPLE_CAMPFIRE.get(), ChunkSectionLayer.CUTOUT);
-        ItemBlockRenderTypes.setRenderLayer(ModBlocks.RED_CAMPFIRE.get(), ChunkSectionLayer.CUTOUT);
-        ItemBlockRenderTypes.setRenderLayer(ModBlocks.WHITE_CAMPFIRE.get(), ChunkSectionLayer.CUTOUT);
-        ItemBlockRenderTypes.setRenderLayer(ModBlocks.YELLOW_CAMPFIRE.get(), ChunkSectionLayer.CUTOUT);
     }
 }

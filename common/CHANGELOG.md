@@ -1,5 +1,3 @@
-# Changelog 1.21.11
+# Changelog
 
-### Fixed
-
-- Crash caused by incompatibility with Barbeque's Delight.
+26.1 Update

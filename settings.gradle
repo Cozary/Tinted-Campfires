@@ -13,17 +13,6 @@ pluginManagement {
                 includeGroupAndSubgroups('net.fabricmc')
             }
         }
-        exclusiveContent {
-            forRepository {
-                maven {
-                    name = 'Forge'
-                    url = uri('https://maven.minecraftforge.net')
-                }
-            }
-            filter {
-                includeGroupAndSubgroups('net.minecraftforge')
-            }
-        }
     }
 }
 
@@ -35,5 +24,4 @@ plugins {
 rootProject.name = 'Tinted-Campfires'
 include('common')
 include('fabric')
-include('forge')
 include('neoforge')
