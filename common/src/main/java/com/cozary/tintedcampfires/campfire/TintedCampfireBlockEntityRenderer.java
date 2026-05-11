@@ -5,7 +5,6 @@ import com.mojang.math.Axis;
 import net.minecraft.client.renderer.SubmitNodeCollector;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
 import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
-import net.minecraft.client.renderer.blockentity.CampfireRenderer;
 import net.minecraft.client.renderer.blockentity.state.CampfireRenderState;
 import net.minecraft.client.renderer.feature.ModelFeatureRenderer;
 import net.minecraft.client.renderer.item.ItemModelResolver;
@@ -13,60 +12,61 @@ import net.minecraft.client.renderer.item.ItemStackRenderState;
 import net.minecraft.client.renderer.state.level.CameraRenderState;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.core.Direction;
-import net.minecraft.world.entity.ItemOwner;
 import net.minecraft.world.item.ItemDisplayContext;
-import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.CampfireBlock;
-import net.minecraft.world.level.block.entity.CampfireBlockEntity;
 import net.minecraft.world.phys.Vec3;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class TintedCampfireBlockEntityRenderer implements BlockEntityRenderer<TintedCampfireBlockEntity, CampfireRenderState> {
-    private static final float SIZE = 0.375F;
-    protected final ItemModelResolver itemRenderer;
+    private final ItemModelResolver itemModelResolver;
 
     public TintedCampfireBlockEntityRenderer(BlockEntityRendererProvider.Context context) {
-        this.itemRenderer = context.itemModelResolver();
+        this.itemModelResolver = context.itemModelResolver();
     }
 
+    @Override
     public CampfireRenderState createRenderState() {
         return new CampfireRenderState();
     }
 
-    public void extractRenderState(TintedCampfireBlockEntity blockEntity, CampfireRenderState renderState, float partialTick, Vec3 cameraPosition, ModelFeatureRenderer.CrumblingOverlay breakProgress) {
-        renderState.facing = (Direction) blockEntity.getBlockState().getValue(CampfireBlock.FACING);
-        int i = (int) blockEntity.getBlockPos().asLong();
-        renderState.items = new ArrayList();
+    @Override
+    public void extractRenderState(TintedCampfireBlockEntity blockEntity, CampfireRenderState renderState, float partialTick, Vec3 cameraPosition, @Nullable ModelFeatureRenderer.CrumblingOverlay breakProgress) {
+        // This is the crucial call that was missing. It calculates light levels.
+        BlockEntityRenderer.super.extractRenderState(blockEntity, renderState, partialTick, cameraPosition, breakProgress);
 
-        for (int j = 0; j < blockEntity.getItems().size(); ++j) {
-            ItemStackRenderState itemstackrenderstate = new ItemStackRenderState();
-            this.itemRenderer.updateForTopItem(itemstackrenderstate, (ItemStack) blockEntity.getItems().get(j), ItemDisplayContext.FIXED, blockEntity.getLevel(), (ItemOwner) null, i + j);
-            renderState.items.add(itemstackrenderstate);
+        renderState.facing = blockEntity.getBlockState().getValue(CampfireBlock.FACING);
+        int seed = (int) blockEntity.getBlockPos().asLong();
+        renderState.items = new ArrayList<>();
+
+        for (int slot = 0; slot < blockEntity.getItems().size(); ++slot) {
+            ItemStackRenderState itemState = new ItemStackRenderState();
+            this.itemModelResolver.updateForTopItem(itemState, blockEntity.getItems().get(slot), ItemDisplayContext.FIXED, blockEntity.getLevel(), null, seed + slot);
+            renderState.items.add(itemState);
         }
-
     }
 
-    public void submit(CampfireRenderState renderState, PoseStack poseStack, SubmitNodeCollector nodeCollector, CameraRenderState camera) {
-        Direction direction = renderState.facing;
-        List<ItemStackRenderState> list = renderState.items;
+    @Override
+    public void submit(CampfireRenderState renderState, PoseStack poseStack, SubmitNodeCollector submitNodeCollector, CameraRenderState camera) {
+        Direction facing = renderState.facing;
+        List<ItemStackRenderState> items = renderState.items;
 
-        for (int i = 0; i < list.size(); ++i) {
-            ItemStackRenderState itemstackrenderstate = (ItemStackRenderState) list.get(i);
-            if (!itemstackrenderstate.isEmpty()) {
+        for (int slot = 0; slot < items.size(); ++slot) {
+            ItemStackRenderState itemState = items.get(slot);
+            if (!itemState.isEmpty()) {
                 poseStack.pushPose();
                 poseStack.translate(0.5F, 0.44921875F, 0.5F);
-                Direction direction1 = Direction.from2DDataValue((i + direction.get2DDataValue()) % 4);
-                float f = -direction1.toYRot();
-                poseStack.mulPose(Axis.YP.rotationDegrees(f));
+                Direction direction = Direction.from2DDataValue((slot + facing.get2DDataValue()) % 4);
+                float angle = -direction.toYRot();
+                poseStack.mulPose(Axis.YP.rotationDegrees(angle));
                 poseStack.mulPose(Axis.XP.rotationDegrees(90.0F));
                 poseStack.translate(-0.3125F, -0.3125F, 0.0F);
                 poseStack.scale(0.375F, 0.375F, 0.375F);
-                itemstackrenderstate.submit(poseStack, nodeCollector, renderState.lightCoords, OverlayTexture.NO_OVERLAY, 0);
+                itemState.submit(poseStack, submitNodeCollector, renderState.lightCoords, OverlayTexture.NO_OVERLAY, 0);
                 poseStack.popPose();
             }
         }
-
     }
 }

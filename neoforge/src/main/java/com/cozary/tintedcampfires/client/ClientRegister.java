@@ -3,14 +3,11 @@ package com.cozary.tintedcampfires.client;
 import com.cozary.tintedcampfires.TintedCampfires;
 import com.cozary.tintedcampfires.campfire.TintedCampfireBlockEntityRenderer;
 import com.cozary.tintedcampfires.init.ModBlockEntities;
-import com.cozary.tintedcampfires.init.ModBlocks;
 import com.cozary.tintedcampfires.init.particles.ColorCampfireParticle;
 import com.cozary.tintedcampfires.init.particles.ModParticles;
-import net.minecraft.client.renderer.chunk.ChunkSectionLayer;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
-import net.neoforged.fml.event.lifecycle.FMLClientSetupEvent;
 import net.neoforged.neoforge.client.event.EntityRenderersEvent;
 import net.neoforged.neoforge.client.event.RegisterParticleProvidersEvent;
 
