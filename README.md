@@ -1,5 +1,7 @@
 # Tinted Campfires
 
+### **[Check out the wiki!](https://cozarycore.com/wiki/tinted-campfires/)**
+
 Looking for a simple mod to decorate? This mod adds a campfire for each color that exists in the game so that you can use them with the color that you like the most!
 
 The campfires added by the mod work the same as the ones in the vanilla game. (Except for the interaction the bees have with the Campfires from the base game.)
