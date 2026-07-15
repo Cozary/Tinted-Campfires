@@ -99,7 +99,7 @@ public class TintedCampfireBlockEntity extends BlockEntity implements Clearable 
         RandomSource random = level.getRandom();
         if (random.nextFloat() < 0.11F) {
             for (int i = 0; i < random.nextInt(2) + 2; ++i) {
-                CampfireBlock.makeParticles(level, pos, (Boolean) state.getValue(CampfireBlock.SIGNAL_FIRE), false);
+                TintedCampfireBlock.makeParticles(level, pos, state, (Boolean) state.getValue(CampfireBlock.SIGNAL_FIRE), false);
             }
         }
 

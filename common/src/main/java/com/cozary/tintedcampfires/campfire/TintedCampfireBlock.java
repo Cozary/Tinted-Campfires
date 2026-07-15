@@ -2,8 +2,10 @@ package com.cozary.tintedcampfires.campfire;
 
 import com.cozary.tintedcampfires.TintedCampfires;
 import com.cozary.tintedcampfires.init.ModBlockEntities;
+import com.cozary.tintedcampfires.init.particles.ModParticles;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleOptions;
+import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.Identifier;
 import net.minecraft.resources.ResourceKey;
@@ -15,6 +17,7 @@ import net.minecraft.util.RandomSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.DyeColor;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.*;
 import net.minecraft.world.level.Level;
@@ -38,11 +41,54 @@ public class TintedCampfireBlock extends CampfireBlock {
 
     protected final boolean spawnParticles;
     private final Supplier<ParticleOptions> particleSupplier;
+    private final DyeColor dyeColor;
 
-    public TintedCampfireBlock(boolean spawnParticles, int fireDamage, BlockBehaviour.Properties properties, String name, Supplier<ParticleOptions> particleSupplier) {
+    public TintedCampfireBlock(boolean spawnParticles, int fireDamage, BlockBehaviour.Properties properties, String name, Supplier<ParticleOptions> particleSupplier, DyeColor dyeColor) {
         super(spawnParticles, fireDamage, properties.mapColor(MapColor.PODZOL).instrument(NoteBlockInstrument.BASS).strength(2.0F).sound(SoundType.WOOD).lightLevel(litBlockEmission(15)).noOcclusion().ignitedByLava().setId(ResourceKey.create(Registries.BLOCK, Identifier.fromNamespaceAndPath(TintedCampfires.MOD_ID, name))));
         this.spawnParticles = spawnParticles;
         this.particleSupplier = particleSupplier;
+        this.dyeColor = dyeColor;
+    }
+
+    public DyeColor getDyeColor() {
+        return this.dyeColor;
+    }
+
+    public static void makeParticles(Level level, BlockPos pos, BlockState state, boolean isSignalFire, boolean smoking) {
+        if (!(state.getBlock() instanceof TintedCampfireBlock tintedBlock)) {
+            return;
+        }
+
+        RandomSource random = level.getRandom();
+        ParticleOptions smokeParticle = isSignalFire ? ModParticles.TINTED_SIGNAL_SMOKE.get() : ModParticles.TINTED_COSY_SMOKE.get();
+
+        DyeColor dyeColor = tintedBlock.getDyeColor();
+        int colorInt = dyeColor.getTextureDiffuseColor();
+        float r = ((colorInt >> 16) & 0xFF) / 255.0F;
+        float g = ((colorInt >> 8) & 0xFF) / 255.0F;
+        float b = (colorInt & 0xFF) / 255.0F;
+
+        level.addAlwaysVisibleParticle(
+                smokeParticle,
+                true,
+                (double)pos.getX() + 0.5 + random.nextDouble() / 3.0 * (double)(random.nextBoolean() ? 1 : -1),
+                (double)pos.getY() + random.nextDouble() + random.nextDouble(),
+                (double)pos.getZ() + 0.5 + random.nextDouble() / 3.0 * (double)(random.nextBoolean() ? 1 : -1),
+                r,
+                g,
+                b
+        );
+        if (smoking) {
+            level.addParticle(
+                    ParticleTypes.SMOKE,
+                    (double)pos.getX() + 0.5 + random.nextDouble() / 4.0 * (double)(random.nextBoolean() ? 1 : -1),
+                    (double)pos.getY() + 0.4,
+                    (double)pos.getZ() + 0.5 + random.nextDouble() / 4.0 * (double)(random.nextBoolean() ? 1 : -1),
+                    0.0,
+                    0.005,
+                    0.0
+            );
+        }
     }
 
     public static ToIntFunction<BlockState> litBlockEmission(int p_50760_) {

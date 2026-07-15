@@ -1,9 +1,12 @@
 package com.cozary.tintedcampfires.client;
 
 import com.cozary.tintedcampfires.init.particles.ColorCampfireParticle;
+import com.cozary.tintedcampfires.init.particles.ColorCampfireSmokeParticle;
 import com.cozary.tintedcampfires.init.particles.ModParticles;
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.fabric.api.client.particle.v1.ParticleProviderRegistry;
+import net.minecraft.core.particles.SimpleParticleType;
+import net.minecraft.world.item.DyeColor;
 
 public class ParticleRegister implements ClientModInitializer {
     @Override
@@ -24,5 +27,8 @@ public class ParticleRegister implements ClientModInitializer {
         ParticleProviderRegistry.getInstance().register(ModParticles.RED_LAVA.get(), ColorCampfireParticle.Factory::new);
         ParticleProviderRegistry.getInstance().register(ModParticles.WHITE_LAVA.get(), ColorCampfireParticle.Factory::new);
         ParticleProviderRegistry.getInstance().register(ModParticles.YELLOW_LAVA.get(), ColorCampfireParticle.Factory::new);
+
+        ParticleProviderRegistry.getInstance().register(ModParticles.TINTED_COSY_SMOKE.get(), ColorCampfireSmokeParticle.CosyProvider::new);
+        ParticleProviderRegistry.getInstance().register(ModParticles.TINTED_SIGNAL_SMOKE.get(), ColorCampfireSmokeParticle.SignalProvider::new);
     }
 }

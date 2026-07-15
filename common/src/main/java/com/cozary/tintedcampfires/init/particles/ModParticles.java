@@ -44,6 +44,9 @@ public class ModParticles {
     public static final RegistryObject<SimpleParticleType> YELLOW_LAVA = PARTICLES.register("yellow_lava", () -> new SimpleParticleType(true) {
     });
 
+    public static final RegistryObject<SimpleParticleType> TINTED_COSY_SMOKE = PARTICLES.register("tinted_cosy_smoke", () -> new SimpleParticleType(true) {});
+    public static final RegistryObject<SimpleParticleType> TINTED_SIGNAL_SMOKE = PARTICLES.register("tinted_signal_smoke", () -> new SimpleParticleType(true) {});
+
     public static void loadClass() {
     }
 

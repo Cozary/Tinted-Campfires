@@ -4,7 +4,10 @@ import com.cozary.tintedcampfires.TintedCampfires;
 import com.cozary.tintedcampfires.campfire.TintedCampfireBlockEntityRenderer;
 import com.cozary.tintedcampfires.init.ModBlockEntities;
 import com.cozary.tintedcampfires.init.particles.ColorCampfireParticle;
+import com.cozary.tintedcampfires.init.particles.ColorCampfireSmokeParticle;
 import com.cozary.tintedcampfires.init.particles.ModParticles;
+import net.minecraft.core.particles.SimpleParticleType;
+import net.minecraft.world.item.DyeColor;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
@@ -32,6 +35,9 @@ public class ClientRegister {
         event.registerSpriteSet(ModParticles.RED_LAVA.get(), ColorCampfireParticle.Factory::new);
         event.registerSpriteSet(ModParticles.WHITE_LAVA.get(), ColorCampfireParticle.Factory::new);
         event.registerSpriteSet(ModParticles.YELLOW_LAVA.get(), ColorCampfireParticle.Factory::new);
+
+        event.registerSpriteSet(ModParticles.TINTED_COSY_SMOKE.get(), ColorCampfireSmokeParticle.CosyProvider::new);
+        event.registerSpriteSet(ModParticles.TINTED_SIGNAL_SMOKE.get(), ColorCampfireSmokeParticle.SignalProvider::new);
     }
 
     @SubscribeEvent
