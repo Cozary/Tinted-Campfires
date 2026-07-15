@@ -42,8 +42,7 @@ public class TintedCampfireBlock extends CampfireBlock {
     protected final boolean spawnParticles;
     private final DyeColor dyeColor;
 
-    public TintedCampfireBlock(boolean spawnParticles, int fireDamage, BlockBehaviour.Properties properties,
-            String name, DyeColor dyeColor) {
+    public TintedCampfireBlock(boolean spawnParticles, int fireDamage, BlockBehaviour.Properties properties, String name, DyeColor dyeColor) {
         super(spawnParticles, fireDamage,
                 properties.mapColor(MapColor.PODZOL).instrument(NoteBlockInstrument.BASS).strength(2.0F)
                         .sound(SoundType.WOOD).lightLevel(litBlockEmission(15)).noOcclusion().ignitedByLava()

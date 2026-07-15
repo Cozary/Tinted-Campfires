@@ -27,7 +27,6 @@ public class ColorCampfireParticle extends SingleQuadParticle {
         this.quadSize *= this.random.nextFloat() * 2.0F + 0.2F;
         this.lifetime = (int) (16.0D / (Math.random() * 0.8D + 0.2D));
 
-        // Dynamically resolve block color at spawn position
         BlockPos blockPos = BlockPos.containing(x, y, z);
         BlockState blockState = world.getBlockState(blockPos);
         if (!(blockState.getBlock() instanceof TintedCampfireBlock)) {
@@ -42,7 +41,6 @@ public class ColorCampfireParticle extends SingleQuadParticle {
             float b = (colorVal & 0xFF) / 255.0F;
             this.setColor(r, g, b);
         } else {
-            // Default fallback color
             this.setColor(1.0F, 1.0F, 1.0F);
         }
     }
