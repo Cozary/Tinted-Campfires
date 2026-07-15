@@ -20,12 +20,10 @@ public class ColorCampfireSmokeParticle extends SingleQuadParticle {
 
         this.gravity = 3.0E-6F;
 
-        // Custom tinting color passed through xa (red), ya (green), za (blue)
         this.setColor((float) xa, (float) ya, (float) za);
 
-        // Vanilla movement velocity logic
         this.xd = 0.0D;
-        this.yd = 0.07D + (double)(this.random.nextFloat() / 500.0F);
+        this.yd = 0.07D + (double) (this.random.nextFloat() / 500.0F);
         this.zd = 0.0D;
     }
 
@@ -35,9 +33,9 @@ public class ColorCampfireSmokeParticle extends SingleQuadParticle {
         this.yo = this.y;
         this.zo = this.z;
         if (this.age++ < this.lifetime && !(this.alpha <= 0.0F)) {
-            this.xd += (double)(this.random.nextFloat() / 5000.0F * (float)(this.random.nextBoolean() ? 1 : -1));
-            this.zd += (double)(this.random.nextFloat() / 5000.0F * (float)(this.random.nextBoolean() ? 1 : -1));
-            this.yd -= (double)this.gravity;
+            this.xd += (double) (this.random.nextFloat() / 5000.0F * (float) (this.random.nextBoolean() ? 1 : -1));
+            this.zd += (double) (this.random.nextFloat() / 5000.0F * (float) (this.random.nextBoolean() ? 1 : -1));
+            this.yd -= (double) this.gravity;
             this.move(this.xd, this.yd, this.zd);
             if (this.age >= this.lifetime - 60 && this.alpha > 0.01F) {
                 this.alpha -= 0.015F;
@@ -61,7 +59,8 @@ public class ColorCampfireSmokeParticle extends SingleQuadParticle {
 
         @Override
         public Particle createParticle(SimpleParticleType options, ClientLevel level, double x, double y, double z, double xAux, double yAux, double zAux, RandomSource random) {
-            ColorCampfireSmokeParticle particle = new ColorCampfireSmokeParticle(level, x, y, z, xAux, yAux, zAux, false, this.sprites.get(random));
+            ColorCampfireSmokeParticle particle = new ColorCampfireSmokeParticle(level, x, y, z, xAux, yAux, zAux,
+                    false, this.sprites.get(random));
             particle.setAlpha(0.9F);
             return particle;
         }
@@ -76,7 +75,8 @@ public class ColorCampfireSmokeParticle extends SingleQuadParticle {
 
         @Override
         public Particle createParticle(SimpleParticleType options, ClientLevel level, double x, double y, double z, double xAux, double yAux, double zAux, RandomSource random) {
-            ColorCampfireSmokeParticle particle = new ColorCampfireSmokeParticle(level, x, y, z, xAux, yAux, zAux, true, this.sprites.get(random));
+            ColorCampfireSmokeParticle particle = new ColorCampfireSmokeParticle(level, x, y, z, xAux, yAux, zAux, true,
+                    this.sprites.get(random));
             particle.setAlpha(0.95F);
             return particle;
         }

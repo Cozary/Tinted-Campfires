@@ -40,13 +40,16 @@ import java.util.function.ToIntFunction;
 public class TintedCampfireBlock extends CampfireBlock {
 
     protected final boolean spawnParticles;
-    private final Supplier<ParticleOptions> particleSupplier;
     private final DyeColor dyeColor;
 
-    public TintedCampfireBlock(boolean spawnParticles, int fireDamage, BlockBehaviour.Properties properties, String name, Supplier<ParticleOptions> particleSupplier, DyeColor dyeColor) {
-        super(spawnParticles, fireDamage, properties.mapColor(MapColor.PODZOL).instrument(NoteBlockInstrument.BASS).strength(2.0F).sound(SoundType.WOOD).lightLevel(litBlockEmission(15)).noOcclusion().ignitedByLava().setId(ResourceKey.create(Registries.BLOCK, Identifier.fromNamespaceAndPath(TintedCampfires.MOD_ID, name))));
+    public TintedCampfireBlock(boolean spawnParticles, int fireDamage, BlockBehaviour.Properties properties,
+            String name, DyeColor dyeColor) {
+        super(spawnParticles, fireDamage,
+                properties.mapColor(MapColor.PODZOL).instrument(NoteBlockInstrument.BASS).strength(2.0F)
+                        .sound(SoundType.WOOD).lightLevel(litBlockEmission(15)).noOcclusion().ignitedByLava()
+                        .setId(ResourceKey.create(Registries.BLOCK,
+                                Identifier.fromNamespaceAndPath(TintedCampfires.MOD_ID, name))));
         this.spawnParticles = spawnParticles;
-        this.particleSupplier = particleSupplier;
         this.dyeColor = dyeColor;
     }
 
@@ -54,13 +57,15 @@ public class TintedCampfireBlock extends CampfireBlock {
         return this.dyeColor;
     }
 
-    public static void makeParticles(Level level, BlockPos pos, BlockState state, boolean isSignalFire, boolean smoking) {
+    public static void makeParticles(Level level, BlockPos pos, BlockState state, boolean isSignalFire,
+            boolean smoking) {
         if (!(state.getBlock() instanceof TintedCampfireBlock tintedBlock)) {
             return;
         }
 
         RandomSource random = level.getRandom();
-        ParticleOptions smokeParticle = isSignalFire ? ModParticles.TINTED_SIGNAL_SMOKE.get() : ModParticles.TINTED_COSY_SMOKE.get();
+        ParticleOptions smokeParticle = isSignalFire ? ModParticles.TINTED_SIGNAL_SMOKE.get()
+                : ModParticles.TINTED_COSY_SMOKE.get();
 
         DyeColor dyeColor = tintedBlock.getDyeColor();
         int colorInt = dyeColor.getTextureDiffuseColor();
@@ -71,23 +76,21 @@ public class TintedCampfireBlock extends CampfireBlock {
         level.addAlwaysVisibleParticle(
                 smokeParticle,
                 true,
-                (double)pos.getX() + 0.5 + random.nextDouble() / 3.0 * (double)(random.nextBoolean() ? 1 : -1),
-                (double)pos.getY() + random.nextDouble() + random.nextDouble(),
-                (double)pos.getZ() + 0.5 + random.nextDouble() / 3.0 * (double)(random.nextBoolean() ? 1 : -1),
+                (double) pos.getX() + 0.5 + random.nextDouble() / 3.0 * (double) (random.nextBoolean() ? 1 : -1),
+                (double) pos.getY() + random.nextDouble() + random.nextDouble(),
+                (double) pos.getZ() + 0.5 + random.nextDouble() / 3.0 * (double) (random.nextBoolean() ? 1 : -1),
                 r,
                 g,
-                b
-        );
+                b);
         if (smoking) {
             level.addParticle(
                     ParticleTypes.SMOKE,
-                    (double)pos.getX() + 0.5 + random.nextDouble() / 4.0 * (double)(random.nextBoolean() ? 1 : -1),
-                    (double)pos.getY() + 0.4,
-                    (double)pos.getZ() + 0.5 + random.nextDouble() / 4.0 * (double)(random.nextBoolean() ? 1 : -1),
+                    (double) pos.getX() + 0.5 + random.nextDouble() / 4.0 * (double) (random.nextBoolean() ? 1 : -1),
+                    (double) pos.getY() + 0.4,
+                    (double) pos.getZ() + 0.5 + random.nextDouble() / 4.0 * (double) (random.nextBoolean() ? 1 : -1),
                     0.0,
                     0.005,
-                    0.0
-            );
+                    0.0);
         }
     }
 
@@ -98,17 +101,20 @@ public class TintedCampfireBlock extends CampfireBlock {
     }
 
     protected ParticleOptions getCustomParticle() {
-        return particleSupplier.get();
+        return ModParticles.TINTED_LAVA.get();
     }
 
     @Override
     public void animateTick(BlockState state, Level level, BlockPos pos, RandomSource rand) {
         if (state.getValue(LIT)) {
             if (rand.nextInt(10) == 0) {
-                level.playLocalSound(pos.getX() + 0.5D, pos.getY() + 0.5D, pos.getZ() + 0.5D, SoundEvents.CAMPFIRE_CRACKLE, SoundSource.BLOCKS, 0.5F + rand.nextFloat(), rand.nextFloat() * 0.7F + 0.6F, false);
+                level.playLocalSound(pos.getX() + 0.5D, pos.getY() + 0.5D, pos.getZ() + 0.5D,
+                        SoundEvents.CAMPFIRE_CRACKLE, SoundSource.BLOCKS, 0.5F + rand.nextFloat(),
+                        rand.nextFloat() * 0.7F + 0.6F, false);
             }
             if (this.spawnParticles && rand.nextInt(5) == 0) {
-                level.addParticle(getCustomParticle(), pos.getX() + 0.5D, pos.getY() + 0.5D, pos.getZ() + 0.5D, rand.nextFloat() / 2.0F, 5.0E-5D, rand.nextFloat() / 2.0F);
+                level.addParticle(getCustomParticle(), pos.getX() + 0.5D, pos.getY() + 0.5D, pos.getZ() + 0.5D,
+                        rand.nextFloat() / 2.0F, 5.0E-5D, rand.nextFloat() / 2.0F);
             }
         }
     }
@@ -120,25 +126,31 @@ public class TintedCampfireBlock extends CampfireBlock {
 
     @Nullable
     @Override
-    public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level level, BlockState state, BlockEntityType<T> blockEntityType) {
+    public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level level, BlockState state,
+            BlockEntityType<T> blockEntityType) {
         if (level instanceof ServerLevel serverlevel) {
             if ((Boolean) state.getValue(LIT)) {
-                RecipeManager.CachedCheck<SingleRecipeInput, CampfireCookingRecipe> cachedcheck = RecipeManager.createCheck(RecipeType.CAMPFIRE_COOKING);
-                return createTickerHelper(blockEntityType, ModBlockEntities.TINTED_CAMPFIRE.get(), (p_379259_, p_379260_, p_379261_, p_379262_) -> {
-                    TintedCampfireBlockEntity.cookTick(serverlevel, p_379260_, p_379261_, p_379262_, cachedcheck);
-                });
+                RecipeManager.CachedCheck<SingleRecipeInput, CampfireCookingRecipe> cachedcheck = RecipeManager
+                        .createCheck(RecipeType.CAMPFIRE_COOKING);
+                return createTickerHelper(blockEntityType, ModBlockEntities.TINTED_CAMPFIRE.get(),
+                        (p_379259_, p_379260_, p_379261_, p_379262_) -> {
+                            TintedCampfireBlockEntity.cookTick(serverlevel, p_379260_, p_379261_, p_379262_,
+                                    cachedcheck);
+                        });
             } else {
-                return createTickerHelper(blockEntityType, ModBlockEntities.TINTED_CAMPFIRE.get(), TintedCampfireBlockEntity::cooldownTick);
+                return createTickerHelper(blockEntityType, ModBlockEntities.TINTED_CAMPFIRE.get(),
+                        TintedCampfireBlockEntity::cooldownTick);
             }
         } else {
-            return (Boolean) state.getValue(LIT) ? createTickerHelper(blockEntityType, ModBlockEntities.TINTED_CAMPFIRE.get(), TintedCampfireBlockEntity::particleTick) : null;
+            return (Boolean) state.getValue(LIT) ? createTickerHelper(blockEntityType,
+                    ModBlockEntities.TINTED_CAMPFIRE.get(), TintedCampfireBlockEntity::particleTick) : null;
         }
     }
 
     @Override
     protected InteractionResult useItemOn(
-            ItemStack itemStack, BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hitResult
-    ) {
+            ItemStack itemStack, BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand,
+            BlockHitResult hitResult) {
         if (level.getBlockEntity(pos) instanceof TintedCampfireBlockEntity campfire) {
             ItemStack itemInHand = player.getItemInHand(hand);
             if (level.recipeAccess().propertySet(RecipePropertySet.CAMPFIRE_INPUT).test(itemInHand)) {
