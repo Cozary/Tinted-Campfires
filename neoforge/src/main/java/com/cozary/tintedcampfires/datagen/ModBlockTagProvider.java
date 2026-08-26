@@ -10,52 +10,50 @@ import net.neoforged.neoforge.common.data.BlockTagsProvider;
 import java.util.concurrent.CompletableFuture;
 
 public class ModBlockTagProvider extends BlockTagsProvider {
-    public ModBlockTagProvider(PackOutput packOutput, CompletableFuture<HolderLookup.Provider> lookupProvider) {
-        super(packOutput, lookupProvider, TintedCampfires.MOD_ID);
-    }
+        public ModBlockTagProvider(PackOutput packOutput, CompletableFuture<HolderLookup.Provider> lookupProvider) {
+                super(packOutput, lookupProvider, TintedCampfires.MOD_ID);
+        }
 
-    @Override
-    protected void addTags(HolderLookup.Provider provider) {
+        @Override
+        protected void addTags(HolderLookup.Provider provider) {
 
-        tag(BlockTags.MINEABLE_WITH_AXE)
-                .add(
-                        ModBlocks.BLACK_CAMPFIRE.get(),
-                        ModBlocks.BLUE_CAMPFIRE.get(),
-                        ModBlocks.BROWN_CAMPFIRE.get(),
-                        ModBlocks.GREEN_CAMPFIRE.get(),
-                        ModBlocks.RED_CAMPFIRE.get(),
-                        ModBlocks.WHITE_CAMPFIRE.get(),
-                        ModBlocks.YELLOW_CAMPFIRE.get(),
-                        ModBlocks.LIGHT_BLUE_CAMPFIRE.get(),
-                        ModBlocks.LIGHT_GRAY_CAMPFIRE.get(),
-                        ModBlocks.LIME_CAMPFIRE.get(),
-                        ModBlocks.MAGENTA_CAMPFIRE.get(),
-                        ModBlocks.ORANGE_CAMPFIRE.get(),
-                        ModBlocks.PINK_CAMPFIRE.get(),
-                        ModBlocks.CYAN_CAMPFIRE.get(),
-                        ModBlocks.GRAY_CAMPFIRE.get(),
-                        ModBlocks.PURPLE_CAMPFIRE.get()
-                );
+                tag(BlockTags.MINEABLE_WITH_AXE)
+                                .add(
+                                                ModBlocks.BLACK_CAMPFIRE.getResourceKey(),
+                                                ModBlocks.BLUE_CAMPFIRE.getResourceKey(),
+                                                ModBlocks.BROWN_CAMPFIRE.getResourceKey(),
+                                                ModBlocks.GREEN_CAMPFIRE.getResourceKey(),
+                                                ModBlocks.RED_CAMPFIRE.getResourceKey(),
+                                                ModBlocks.WHITE_CAMPFIRE.getResourceKey(),
+                                                ModBlocks.YELLOW_CAMPFIRE.getResourceKey(),
+                                                ModBlocks.LIGHT_BLUE_CAMPFIRE.getResourceKey(),
+                                                ModBlocks.LIGHT_GRAY_CAMPFIRE.getResourceKey(),
+                                                ModBlocks.LIME_CAMPFIRE.getResourceKey(),
+                                                ModBlocks.MAGENTA_CAMPFIRE.getResourceKey(),
+                                                ModBlocks.ORANGE_CAMPFIRE.getResourceKey(),
+                                                ModBlocks.PINK_CAMPFIRE.getResourceKey(),
+                                                ModBlocks.CYAN_CAMPFIRE.getResourceKey(),
+                                                ModBlocks.GRAY_CAMPFIRE.getResourceKey(),
+                                                ModBlocks.PURPLE_CAMPFIRE.getResourceKey());
 
-        tag(BlockTags.CAMPFIRES)
-                .add(
-                        ModBlocks.BLACK_CAMPFIRE.get(),
-                        ModBlocks.BLUE_CAMPFIRE.get(),
-                        ModBlocks.BROWN_CAMPFIRE.get(),
-                        ModBlocks.GREEN_CAMPFIRE.get(),
-                        ModBlocks.RED_CAMPFIRE.get(),
-                        ModBlocks.WHITE_CAMPFIRE.get(),
-                        ModBlocks.YELLOW_CAMPFIRE.get(),
-                        ModBlocks.LIGHT_BLUE_CAMPFIRE.get(),
-                        ModBlocks.LIGHT_GRAY_CAMPFIRE.get(),
-                        ModBlocks.LIME_CAMPFIRE.get(),
-                        ModBlocks.MAGENTA_CAMPFIRE.get(),
-                        ModBlocks.ORANGE_CAMPFIRE.get(),
-                        ModBlocks.PINK_CAMPFIRE.get(),
-                        ModBlocks.CYAN_CAMPFIRE.get(),
-                        ModBlocks.GRAY_CAMPFIRE.get(),
-                        ModBlocks.PURPLE_CAMPFIRE.get()
-                );
+                tag(BlockTags.CAMPFIRES)
+                                .add(
+                                                ModBlocks.BLACK_CAMPFIRE.getResourceKey(),
+                                                ModBlocks.BLUE_CAMPFIRE.getResourceKey(),
+                                                ModBlocks.BROWN_CAMPFIRE.getResourceKey(),
+                                                ModBlocks.GREEN_CAMPFIRE.getResourceKey(),
+                                                ModBlocks.RED_CAMPFIRE.getResourceKey(),
+                                                ModBlocks.WHITE_CAMPFIRE.getResourceKey(),
+                                                ModBlocks.YELLOW_CAMPFIRE.getResourceKey(),
+                                                ModBlocks.LIGHT_BLUE_CAMPFIRE.getResourceKey(),
+                                                ModBlocks.LIGHT_GRAY_CAMPFIRE.getResourceKey(),
+                                                ModBlocks.LIME_CAMPFIRE.getResourceKey(),
+                                                ModBlocks.MAGENTA_CAMPFIRE.getResourceKey(),
+                                                ModBlocks.ORANGE_CAMPFIRE.getResourceKey(),
+                                                ModBlocks.PINK_CAMPFIRE.getResourceKey(),
+                                                ModBlocks.CYAN_CAMPFIRE.getResourceKey(),
+                                                ModBlocks.GRAY_CAMPFIRE.getResourceKey(),
+                                                ModBlocks.PURPLE_CAMPFIRE.getResourceKey());
 
-    }
+        }
 }

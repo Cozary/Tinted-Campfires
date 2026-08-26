@@ -16,23 +16,22 @@ import java.util.function.Supplier;
 public class ModRecipeProvider extends RecipeProvider {
 
     public static final Supplier<List<FloralEntry>> TINTED_CAMPFIRES = () -> List.of(
-            new FloralEntry(ModItems.BLACK_CAMPFIRE_ITEM.get(), Items.BLACK_DYE),
-            new FloralEntry(ModItems.BLUE_CAMPFIRE_ITEM.get(), Items.BLUE_DYE),
-            new FloralEntry(ModItems.BROWN_CAMPFIRE_ITEM.get(), Items.BROWN_DYE),
-            new FloralEntry(ModItems.GREEN_CAMPFIRE_ITEM.get(), Items.GREEN_DYE),
-            new FloralEntry(ModItems.RED_CAMPFIRE_ITEM.get(), Items.RED_DYE),
-            new FloralEntry(ModItems.WHITE_CAMPFIRE_ITEM.get(), Items.WHITE_DYE),
-            new FloralEntry(ModItems.YELLOW_CAMPFIRE_ITEM.get(), Items.YELLOW_DYE),
-            new FloralEntry(ModItems.LIGHT_BLUE_CAMPFIRE_ITEM.get(), Items.LIGHT_BLUE_DYE),
-            new FloralEntry(ModItems.LIGHT_GRAY_CAMPFIRE_ITEM.get(), Items.LIGHT_GRAY_DYE),
-            new FloralEntry(ModItems.LIME_CAMPFIRE_ITEM.get(), Items.LIME_DYE),
-            new FloralEntry(ModItems.MAGENTA_CAMPFIRE_ITEM.get(), Items.MAGENTA_DYE),
-            new FloralEntry(ModItems.ORANGE_CAMPFIRE_ITEM.get(), Items.ORANGE_DYE),
-            new FloralEntry(ModItems.PINK_CAMPFIRE_ITEM.get(), Items.PINK_DYE),
-            new FloralEntry(ModItems.CYAN_CAMPFIRE_ITEM.get(), Items.CYAN_DYE),
-            new FloralEntry(ModItems.GRAY_CAMPFIRE_ITEM.get(), Items.GRAY_DYE),
-            new FloralEntry(ModItems.PURPLE_CAMPFIRE_ITEM.get(), Items.PURPLE_DYE)
-    );
+            new FloralEntry(ModItems.BLACK_CAMPFIRE_ITEM.get(), Items.DYE.black()),
+            new FloralEntry(ModItems.BLUE_CAMPFIRE_ITEM.get(), Items.DYE.blue()),
+            new FloralEntry(ModItems.BROWN_CAMPFIRE_ITEM.get(), Items.DYE.brown()),
+            new FloralEntry(ModItems.GREEN_CAMPFIRE_ITEM.get(), Items.DYE.green()),
+            new FloralEntry(ModItems.RED_CAMPFIRE_ITEM.get(), Items.DYE.red()),
+            new FloralEntry(ModItems.WHITE_CAMPFIRE_ITEM.get(), Items.DYE.white()),
+            new FloralEntry(ModItems.YELLOW_CAMPFIRE_ITEM.get(), Items.DYE.yellow()),
+            new FloralEntry(ModItems.LIGHT_BLUE_CAMPFIRE_ITEM.get(), Items.DYE.lightBlue()),
+            new FloralEntry(ModItems.LIGHT_GRAY_CAMPFIRE_ITEM.get(), Items.DYE.lightGray()),
+            new FloralEntry(ModItems.LIME_CAMPFIRE_ITEM.get(), Items.DYE.lime()),
+            new FloralEntry(ModItems.MAGENTA_CAMPFIRE_ITEM.get(), Items.DYE.magenta()),
+            new FloralEntry(ModItems.ORANGE_CAMPFIRE_ITEM.get(), Items.DYE.orange()),
+            new FloralEntry(ModItems.PINK_CAMPFIRE_ITEM.get(), Items.DYE.pink()),
+            new FloralEntry(ModItems.CYAN_CAMPFIRE_ITEM.get(), Items.DYE.cyan()),
+            new FloralEntry(ModItems.GRAY_CAMPFIRE_ITEM.get(), Items.DYE.gray()),
+            new FloralEntry(ModItems.PURPLE_CAMPFIRE_ITEM.get(), Items.DYE.purple()));
 
     protected ModRecipeProvider(HolderLookup.Provider registries, RecipeOutput output) {
         super(registries, output);
