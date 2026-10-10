@@ -24,21 +24,11 @@ I do this as a hobby but it still consumes some of my time. So if you really lik
 
 ## Translations
 
-<details>
-<summary>🌍 Translation Progress %</summary>
-<br>
+If you would like to help translate Tinted Campfires into your language:
 
-Here are the translations, which are managed through Crowdin at the following link: **[Crowdin Tinted Campfires](https://crowdin.com/project/tinted-campfires)**. You can contribute to the translations there or by submitting a PR to the project. If the language you are looking for is not available on Crowdin, you can ask me to enable it.
+1. Use the English reference file: [`en_us.json`](common/src/main/resources/assets/tintedcampfires/lang/en_us.json).
+2. Create or update your language file (e.g., `de_de.json`, `fr_fr.json`) inside [`common/src/main/resources/assets/tintedcampfires/lang/`](common/src/main/resources/assets/tintedcampfires/lang/).
+3. Submit your translation by opening a [Pull Request](https://github.com/Cozary/Tinted-Campfires/pulls) (or open an issue with the translated file/entries).
 
-| Language |  Status                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    |
-| :--- |:----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| German | [![de proofreading](https://img.shields.io/badge/dynamic/json?color=green&label=de&style=flat&logo=crowdin&query=%24.progress.0.data.approvalProgress&url=https%3A%2F%2Fbadges.awesome-crowdin.com%2Fstats-15393530-795710.json)](https://crowdin.com/project/tinted-campfires) |
-| Spanish | [![es-ES proofreading](https://img.shields.io/badge/dynamic/json?color=green&label=es-ES&style=flat&logo=crowdin&query=%24.progress.1.data.approvalProgress&url=https%3A%2F%2Fbadges.awesome-crowdin.com%2Fstats-15393530-795710.json)](https://crowdin.com/project/tinted-campfires) |
-| French | [![fr proofreading](https://img.shields.io/badge/dynamic/json?color=green&label=fr&style=flat&logo=crowdin&query=%24.progress.2.data.approvalProgress&url=https%3A%2F%2Fbadges.awesome-crowdin.com%2Fstats-15393530-795710.json)](https://crowdin.com/project/tinted-campfires) |
-| Italian | [![it proofreading](https://img.shields.io/badge/dynamic/json?color=green&label=it&style=flat&logo=crowdin&query=%24.progress.3.data.approvalProgress&url=https%3A%2F%2Fbadges.awesome-crowdin.com%2Fstats-15393530-795710.json)](https://crowdin.com/project/tinted-campfires) |
-| Korean | [![ko proofreading](https://img.shields.io/badge/dynamic/json?color=green&label=ko&style=flat&logo=crowdin&query=%24.progress.4.data.approvalProgress&url=https%3A%2F%2Fbadges.awesome-crowdin.com%2Fstats-15393530-795710.json)](https://crowdin.com/project/tinted-campfires) |
-| Portuguese (Portugal) | [![pt-PT proofreading](https://img.shields.io/badge/dynamic/json?color=green&label=pt-PT&style=flat&logo=crowdin&query=%24.progress.5.data.approvalProgress&url=https%3A%2F%2Fbadges.awesome-crowdin.com%2Fstats-15393530-795710.json)](https://crowdin.com/project/tinted-campfires) |
-| Romanian | [![ro proofreading](https://img.shields.io/badge/dynamic/json?color=green&label=ro&style=flat&logo=crowdin&query=%24.progress.6.data.approvalProgress&url=https%3A%2F%2Fbadges.awesome-crowdin.com%2Fstats-15393530-795710.json)](https://crowdin.com/project/tinted-campfires) |
-| Chinese (Simplified) | [![zh-CN proofreading](https://img.shields.io/badge/dynamic/json?color=green&label=zh-CN&style=flat&logo=crowdin&query=%24.progress.7.data.approvalProgress&url=https%3A%2F%2Fbadges.awesome-crowdin.com%2Fstats-15393530-795710.json)](https://crowdin.com/project/tinted-campfires) |
+Any translation contributions are always appreciated!
 
-</details>
