@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "tintedcampfires:magenta_campfire"
+        "recipes": "tintedcampfires:magenta_campfire"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

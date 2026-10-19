@@ -1,16 +1,15 @@
 package com.cozary.tintedcampfires.datagen;
 
 import com.cozary.tintedcampfires.init.ModItems;
-import net.minecraft.core.HolderLookup;
-import net.minecraft.data.PackOutput;
+import net.minecraft.advancements.Advancement;
 import net.minecraft.data.recipes.RecipeCategory;
-import net.minecraft.data.recipes.RecipeOutput;
 import net.minecraft.data.recipes.RecipeProvider;
+import net.minecraft.data.worldgen.BootstrapContext;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Items;
+import net.minecraft.world.item.crafting.Recipe;
 
 import java.util.List;
-import java.util.concurrent.CompletableFuture;
 import java.util.function.Supplier;
 
 public class ModRecipeProvider extends RecipeProvider {
@@ -33,40 +32,22 @@ public class ModRecipeProvider extends RecipeProvider {
             new FloralEntry(ModItems.GRAY_CAMPFIRE_ITEM.get(), Items.DYE.gray()),
             new FloralEntry(ModItems.PURPLE_CAMPFIRE_ITEM.get(), Items.DYE.purple()));
 
-    protected ModRecipeProvider(HolderLookup.Provider registries, RecipeOutput output) {
-        super(registries, output);
+    public ModRecipeProvider(BootstrapContext<Recipe<?>> recipeOutput, BootstrapContext<Advancement> advancementOutput) {
+        super(recipeOutput, advancementOutput);
     }
 
     @Override
     protected void buildRecipes() {
-
         for (FloralEntry entry : TINTED_CAMPFIRES.get()) {
             shapeless(RecipeCategory.DECORATIONS, entry.item)
                     .requires(entry.dye)
                     .requires(Items.CAMPFIRE)
                     .unlockedBy("has_campfire", has(entry.dye))
-                    .save(output);
-        }
-
-    }
-
-    public static class Runner extends RecipeProvider.Runner {
-        public Runner(PackOutput packOutput, CompletableFuture<HolderLookup.Provider> provider) {
-            super(packOutput, provider);
-        }
-
-        @Override
-        protected RecipeProvider createRecipeProvider(HolderLookup.Provider provider, RecipeOutput recipeOutput) {
-            return new ModRecipeProvider(provider, recipeOutput);
-        }
-
-        @Override
-        public String getName() {
-            return "Tinted Campfires Recipes";
+                    .save(this.output);
         }
     }
 
     public record FloralEntry(Item item, Item dye) {
     }
-
 }
+

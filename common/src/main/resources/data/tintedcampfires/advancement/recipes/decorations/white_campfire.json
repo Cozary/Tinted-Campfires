@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "tintedcampfires:white_campfire"
+        "recipes": "tintedcampfires:white_campfire"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

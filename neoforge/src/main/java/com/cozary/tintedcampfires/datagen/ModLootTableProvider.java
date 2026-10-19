@@ -2,20 +2,22 @@ package com.cozary.tintedcampfires.datagen;
 
 import com.cozary.tintedcampfires.init.ModBlocks;
 import com.cozary.tintedcampfires.init.RegistryObject;
-import net.minecraft.core.HolderLookup;
 import net.minecraft.data.loot.BlockLootSubProvider;
+import net.minecraft.data.loot.LootTableSubProvider;
 import net.minecraft.world.flag.FeatureFlags;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.storage.loot.entries.LootItem;
+import net.minecraft.world.level.storage.loot.entries.LootPoolEntryContainer;
+import net.minecraft.world.level.storage.loot.entries.UniformContainerBase;
 import net.minecraft.world.level.storage.loot.functions.SetItemCountFunction;
-import net.minecraft.world.level.storage.loot.providers.number.ConstantValue;
+import net.minecraft.world.level.storage.loot.providers.number.ints.ContextIntProviders;
 
 import java.util.Set;
 
 public class ModLootTableProvider extends BlockLootSubProvider {
-    public ModLootTableProvider(HolderLookup.Provider lookupProvider) {
-        super(Set.of(), FeatureFlags.REGISTRY.allFlags(), lookupProvider);
+    public ModLootTableProvider(LootTableSubProvider.Context output) {
+        super(Set.of(), FeatureFlags.REGISTRY.allFlags(), output);
     }
 
     @Override
@@ -31,13 +33,15 @@ public class ModLootTableProvider extends BlockLootSubProvider {
         for (var blockHolder : ModBlocks.BLOCKS.getEntries()) {
             Block block = blockHolder.get();
 
+            UniformContainerBase.Builder<?> entry = LootItem.lootTableItem(Items.CHARCOAL)
+                    .apply(SetItemCountFunction.setCount(ContextIntProviders.exactly(2)));
+
             this.add(block, createSilkTouchDispatchTable(
                     block,
-                    this.applyExplosionCondition(block,
-                            LootItem.lootTableItem(Items.CHARCOAL)
-                                    .apply(SetItemCountFunction.setCount(ConstantValue.exactly(2.0f)))
-                    )
+                    (LootPoolEntryContainer.Builder<?>) this.applyExplosionCondition(block, entry)
             ));
         }
     }
 }
+
+

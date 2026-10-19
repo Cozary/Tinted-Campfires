@@ -70,6 +70,19 @@ sourceSets.configureEach {
     }
 }
 
+tasks.register('prepareClientCompile') {
+    dependsOn tasks.named('compileJava')
+}
+
+tasks.register('prepareServerCompile') {
+    dependsOn tasks.named('compileJava')
+}
+
+tasks.register('prepareDataCompile') {
+    dependsOn tasks.named('compileJava')
+}
+
+
 publishMods {
     file = jar.archiveFile
     changelog = getLatestChangelog()

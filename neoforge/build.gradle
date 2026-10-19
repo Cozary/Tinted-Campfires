@@ -97,16 +97,24 @@ publishMods {
 tasks.register('moveGeneratedResources', Copy) {
     group = mod_id
     description = "Moves generated resources to common module, overwriting duplicates."
-    from 'src/generated/resources'
+    from('src/generated/resources') {
+        exclude '.cache'
+        exclude '.cache/**'
+    }
     into rootProject.project(':common').file('src/main/resources')
     duplicatesStrategy = DuplicatesStrategy.INCLUDE
 
     doLast {
-        file('src/generated/resources').deleteDir()
+        file('src/generated').deleteDir()
+        rootProject.project(':common').file('src/main/resources/.cache').deleteDir()
     }
 }
 
 // Automatically run moveGeneratedResources after runData (Only works when running the Gradle task, not the IDE Run Config)
 tasks.named('runData') {
     finalizedBy 'moveGeneratedResources'
+    doLast {
+        file('src/generated/resources/.cache').deleteDir()
+        rootProject.project(':common').file('src/main/resources/.cache').deleteDir()
+    }
 }
