@@ -1,11 +1,13 @@
 package com.cozary.tintedcampfires.dispenser;
 
+import com.cozary.tintedcampfires.campfire.TintedCampfireBlock;
 import com.cozary.tintedcampfires.init.ModBlocks;
 import com.cozary.tintedcampfires.init.particles.ModParticles;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.dispenser.BlockSource;
 import net.minecraft.core.dispenser.DefaultDispenseItemBehavior;
+import net.minecraft.core.particles.ColorParticleOption;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
@@ -18,7 +20,6 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Random;
 
 public class SetColorDispenseBehavior extends DefaultDispenseItemBehavior {
     private static final Map<Item, BlockState> campfireDataMap = new HashMap<>();
@@ -53,17 +54,19 @@ public class SetColorDispenseBehavior extends DefaultDispenseItemBehavior {
         Item item = p_123413_.getItem();
 
         if (state.getBlock() instanceof CampfireBlock) {
-            Direction direction1 = state.getValue(CampfireBlock.FACING);
-            Random rand = new Random();
-            double d0 = rand.nextGaussian() * 0.02D;
-            double d1 = rand.nextGaussian() * 0.02D;
-            double d2 = rand.nextGaussian() * 0.02D;
+            Direction facing = state.getValue(CampfireBlock.FACING);
 
             if (!level.isClientSide()) {
                 BlockState targetState = campfireDataMap.get(item);
                 if (targetState != null) {
-                    level.setBlockAndUpdate(pos, targetState.setValue(CampfireBlock.FACING, direction1));
-                    ((ServerLevel) level).sendParticles(ModParticles.TINTED_LAVA.get(), pos.getX() + 0.5, pos.getY(), pos.getZ() + 0.5, 50, d1, d2, d0, 0.1);
+                    level.setBlockAndUpdate(pos, targetState.setValue(CampfireBlock.FACING, facing));
+                    if (targetState.getBlock() instanceof TintedCampfireBlock tintedCampfire) {
+                        int color = tintedCampfire.getDyeColor().getTextureDiffuseColor();
+                        ((ServerLevel) level).sendParticles(
+                                ColorParticleOption.create(ModParticles.TINTED_LAVA.get(), color),
+                                pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5,
+                                50, 0.25, 0.25, 0.25, 0.1);
+                    }
                     p_123413_.shrink(1);
                 } else {
                     return this.defaultBehavior.dispense(p_123412_, p_123413_);

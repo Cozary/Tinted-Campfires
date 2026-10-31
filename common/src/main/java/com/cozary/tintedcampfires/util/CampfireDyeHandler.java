@@ -1,12 +1,13 @@
 package com.cozary.tintedcampfires.util;
 
+import com.cozary.tintedcampfires.campfire.TintedCampfireBlock;
 import com.cozary.tintedcampfires.init.ModBlocks;
 import com.cozary.tintedcampfires.init.RegistryObject;
 import com.cozary.tintedcampfires.init.particles.ModParticles;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.core.particles.ColorParticleOption;
 import net.minecraft.server.level.ServerLevel;
-import net.minecraft.util.RandomSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
@@ -66,21 +67,22 @@ public class CampfireDyeHandler {
                     .setValue(CampfireBlock.FACING, direction)
                     .setValue(CampfireBlock.LIT, isLit));
 
-            RandomSource rand = level.getRandom();
-            double dx = rand.nextGaussian() * 0.02D;
-            double dy = rand.nextGaussian() * 0.02D;
-            double dz = rand.nextGaussian() * 0.02D;
-
-            ((ServerLevel) level).sendParticles(
-                    ModParticles.TINTED_LAVA.get(),
-                    pos.getX() + 0.5, pos.getY(), pos.getZ() + 0.5,
-                    50, dx, dy, dz, 0.1
-            );
+            if (block instanceof TintedCampfireBlock tintedCampfire) {
+                int color = tintedCampfire.getDyeColor().getTextureDiffuseColor();
+                ((ServerLevel) level).sendParticles(
+                        ColorParticleOption.create(ModParticles.TINTED_LAVA.get(), color),
+                        pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5,
+                        50, 0.25, 0.25, 0.25, 0.1);
+            }
 
             if (!player.getAbilities().instabuild) {
                 itemstack.shrink(1);
             }
 
+            return InteractionResult.SUCCESS;
+        }
+
+        if (CAMPFIRE_MAP.containsKey(item)) {
             return InteractionResult.SUCCESS;
         }
 
