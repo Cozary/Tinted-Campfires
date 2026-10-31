@@ -4,6 +4,7 @@ import com.cozary.tintedcampfires.TintedCampfires;
 import com.cozary.tintedcampfires.init.ModBlockEntities;
 import com.cozary.tintedcampfires.init.particles.ModParticles;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.particles.ColorParticleOption;
 import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.core.registries.Registries;
@@ -72,24 +73,9 @@ public class TintedCampfireBlock extends CampfireBlock {
         float g = ((colorInt >> 8) & 0xFF) / 255.0F;
         float b = (colorInt & 0xFF) / 255.0F;
 
-        level.addAlwaysVisibleParticle(
-                smokeParticle,
-                true,
-                (double) pos.getX() + 0.5 + random.nextDouble() / 3.0 * (double) (random.nextBoolean() ? 1 : -1),
-                (double) pos.getY() + random.nextDouble() + random.nextDouble(),
-                (double) pos.getZ() + 0.5 + random.nextDouble() / 3.0 * (double) (random.nextBoolean() ? 1 : -1),
-                r,
-                g,
-                b);
+        level.addAlwaysVisibleParticle(smokeParticle, true, (double) pos.getX() + 0.5 + random.nextDouble() / 3.0 * (double) (random.nextBoolean() ? 1 : -1), (double) pos.getY() + random.nextDouble() + random.nextDouble(), (double) pos.getZ() + 0.5 + random.nextDouble() / 3.0 * (double) (random.nextBoolean() ? 1 : -1), r, g, b);
         if (smoking) {
-            level.addParticle(
-                    ParticleTypes.SMOKE,
-                    (double) pos.getX() + 0.5 + random.nextDouble() / 4.0 * (double) (random.nextBoolean() ? 1 : -1),
-                    (double) pos.getY() + 0.4,
-                    (double) pos.getZ() + 0.5 + random.nextDouble() / 4.0 * (double) (random.nextBoolean() ? 1 : -1),
-                    0.0,
-                    0.005,
-                    0.0);
+            level.addParticle(ParticleTypes.SMOKE, (double) pos.getX() + 0.5 + random.nextDouble() / 4.0 * (double) (random.nextBoolean() ? 1 : -1), (double) pos.getY() + 0.4, (double) pos.getZ() + 0.5 + random.nextDouble() / 4.0 * (double) (random.nextBoolean() ? 1 : -1), 0.0, 0.005, 0.0);
         }
     }
 
@@ -100,7 +86,7 @@ public class TintedCampfireBlock extends CampfireBlock {
     }
 
     protected ParticleOptions getCustomParticle() {
-        return ModParticles.TINTED_LAVA.get();
+        return ColorParticleOption.create(ModParticles.TINTED_LAVA.get(), this.dyeColor.getTextureDiffuseColor());
     }
 
     @Override
