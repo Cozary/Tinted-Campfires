@@ -35,7 +35,6 @@ import net.minecraft.world.level.material.MapColor;
 import net.minecraft.world.phys.BlockHitResult;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.function.Supplier;
 import java.util.function.ToIntFunction;
 
 public class TintedCampfireBlock extends CampfireBlock {
@@ -53,12 +52,8 @@ public class TintedCampfireBlock extends CampfireBlock {
         this.dyeColor = dyeColor;
     }
 
-    public DyeColor getDyeColor() {
-        return this.dyeColor;
-    }
-
     public static void makeParticles(Level level, BlockPos pos, BlockState state, boolean isSignalFire,
-            boolean smoking) {
+                                     boolean smoking) {
         if (!(state.getBlock() instanceof TintedCampfireBlock tintedBlock)) {
             return;
         }
@@ -83,6 +78,10 @@ public class TintedCampfireBlock extends CampfireBlock {
         return (p_50763_) -> {
             return p_50763_.getValue(BlockStateProperties.LIT) ? p_50760_ : 0;
         };
+    }
+
+    public DyeColor getDyeColor() {
+        return this.dyeColor;
     }
 
     protected ParticleOptions getCustomParticle() {
@@ -112,7 +111,7 @@ public class TintedCampfireBlock extends CampfireBlock {
     @Nullable
     @Override
     public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level level, BlockState state,
-            BlockEntityType<T> blockEntityType) {
+                                                                  BlockEntityType<T> blockEntityType) {
         if (level instanceof ServerLevel serverlevel) {
             if ((Boolean) state.getValue(LIT)) {
                 RecipeManager.CachedCheck<SingleRecipeInput, CampfireCookingRecipe> cachedcheck = RecipeManager

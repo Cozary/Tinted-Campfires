@@ -2,7 +2,6 @@ package com.cozary.tintedcampfires.init;
 
 import com.cozary.tintedcampfires.TintedCampfires;
 import com.cozary.tintedcampfires.campfire.TintedCampfireBlock;
-import com.cozary.tintedcampfires.init.particles.ModParticles;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.world.item.DyeColor;
 import net.minecraft.world.level.block.Block;
